@@ -21,18 +21,20 @@ fi
 
 echo ""
 echo "[1/3] Dropping all tables..."
-docker exec oma-postgres psql -U oma_user -d oma_dev -c "
+docker exec oma-postgres psql -U oma_user -d oma_poc -c "
 DROP TABLE IF EXISTS audit_artifacts CASCADE;
 DROP TABLE IF EXISTS executions CASCADE;
 DROP TABLE IF EXISTS policies CASCADE;
 DROP TABLE IF EXISTS intents CASCADE;
+DROP FUNCTION IF EXISTS generate_artifact_hash() CASCADE;
+DROP FUNCTION IF EXISTS update_updated_at_column() CASCADE;
 " 2>/dev/null || true
 
 echo "[2/3] Recreating schema..."
-docker exec -i oma-postgres psql -U oma_user -d oma_dev < database/schema.sql
+docker exec -i oma-postgres psql -U oma_user -d oma_poc < database/schema.sql
 
 echo "[3/3] Seeding initial data..."
-docker exec -i oma-postgres psql -U oma_user -d oma_dev < database/seed.sql
+docker exec -i oma-postgres psql -U oma_user -d oma_poc < database/seed.sql
 
 echo ""
 echo "=== Database Reset Complete! ==="
