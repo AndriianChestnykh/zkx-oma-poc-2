@@ -71,6 +71,19 @@ export async function POST(
       // Decode events from transaction
       const events = await getTransactionEvents(executionResult.txHash);
 
+      // Helper to convert BigInts to strings recursively
+      const convertBigInts = (obj: any): any => {
+        if (obj === null || obj === undefined) return obj;
+        if (typeof obj === 'bigint') return obj.toString();
+        if (Array.isArray(obj)) return obj.map(convertBigInts);
+        if (typeof obj === 'object') {
+          return Object.fromEntries(
+            Object.entries(obj).map(([key, value]) => [key, convertBigInts(value)])
+          );
+        }
+        return obj;
+      };
+
       // Create audit artifacts for each event
       for (const event of events) {
         await createAuditArtifact({
@@ -79,7 +92,7 @@ export async function POST(
           artifact_type: 'event_decoded',
           data: {
             eventName: event.eventName,
-            args: event.args,
+            args: convertBigInts(event.args),
             blockNumber: event.blockNumber.toString(),
             logIndex: event.logIndex,
           },

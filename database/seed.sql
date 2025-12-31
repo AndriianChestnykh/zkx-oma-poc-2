@@ -8,7 +8,7 @@ VALUES (
     'Approved Venues Only',
     'Restricts trading to approved decentralized exchanges',
     'venue_allowlist',
-    '{"allowed_venues": ["uniswap-v3", "curve", "balancer"]}'::jsonb,
+    '{"allowed_venues": ["MockVenue", "Uniswap", "SushiSwap"]}'::jsonb,
     true,
     10
 );

@@ -27,7 +27,7 @@ const initialFormData: FormData = {
   asset_out: '',
   amount_in: '',
   amount_out_min: '',
-  venue: 'uniswap-v3',
+  venue: 'MockVenue',
   deadline: '24',
   nonce: '0',
 };
@@ -262,9 +262,9 @@ export function IntentForm() {
             error={errors.venue}
             helperText="Trading venue to execute on"
             options={[
-              { value: 'uniswap-v3', label: 'Uniswap V3' },
-              { value: 'curve', label: 'Curve' },
-              { value: 'balancer', label: 'Balancer' },
+              { value: 'MockVenue', label: 'MockVenue (Test)' },
+              { value: 'Uniswap', label: 'Uniswap' },
+              { value: 'SushiSwap', label: 'SushiSwap' },
             ]}
             required
           />
