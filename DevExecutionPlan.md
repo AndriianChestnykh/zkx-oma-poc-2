@@ -667,6 +667,10 @@ cd contracts && forge init --no-git
 - `src/lib/utils/errors.ts` - Custom error classes
 - `src/lib/utils/formatters.ts` - Date, number, address formatters
 
+**1.8 Development Automation**
+- `Makefile` - Task automation shortcuts (see Development Scripts section for full code)
+- `scripts/reset-all.sh` - Complete infrastructure reset script
+
 #### Acceptance Criteria
 - [ ] `npm run dev` starts Next.js app on port 3000
 - [ ] All pages are accessible via navigation links
@@ -675,6 +679,8 @@ cd contracts && forge init --no-git
 - [ ] `forge build` compiles contract stubs without errors
 - [ ] UI components render correctly with TailwindCSS styling
 - [ ] No console errors in browser or terminal
+- [ ] `make help` displays all available commands
+- [ ] `make reset` successfully resets infrastructure (after initial setup)
 
 #### Testing
 - **Manual**: Navigate to all pages, verify UI renders
@@ -1204,6 +1210,116 @@ docker exec -i oma-postgres psql -U oma_user -d oma_poc < database/seed.sql
 echo "Database reset complete!"
 ```
 
+### File: `scripts/reset-all.sh`
+```bash
+#!/bin/bash
+set -e
+
+echo "=== ZKX OMA POC - Full Infrastructure Reset ==="
+echo "WARNING: This will destroy all data and redeploy contracts!"
+read -p "Are you sure? (y/N): " -n 1 -r
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    echo "Reset cancelled."
+    exit 0
+fi
+
+# 1. Stop and remove containers + volumes
+echo "[1/5] Stopping containers and removing volumes..."
+docker compose down -v
+
+# 2. Start containers
+echo "[2/5] Starting containers..."
+docker compose up -d
+
+# 3. Wait for PostgreSQL
+echo "[3/5] Waiting for PostgreSQL to be ready..."
+until docker exec oma-postgres pg_isready -U oma_user 2>/dev/null; do
+    echo "  Waiting for PostgreSQL..."
+    sleep 2
+done
+echo "  PostgreSQL is ready!"
+
+# 4. Wait for Anvil
+echo "[4/5] Waiting for Anvil to be ready..."
+sleep 3
+until curl -s -X POST -H "Content-Type: application/json" \
+    --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
+    http://localhost:8545 >/dev/null 2>&1; do
+    echo "  Waiting for Anvil..."
+    sleep 2
+done
+echo "  Anvil is ready!"
+
+# 5. Deploy contracts
+echo "[5/5] Deploying smart contracts..."
+./scripts/deploy-contracts.sh
+
+echo ""
+echo "=== Reset Complete! ==="
+echo "Infrastructure is ready for development."
+echo ""
+echo "Next steps:"
+echo "  1. Start Next.js: npm run dev"
+echo "  2. Run tests: npm test"
+echo "  3. Check contract addresses in .env.local"
+```
+
+### File: `Makefile`
+```makefile
+.PHONY: help start stop restart reset deploy logs test clean
+
+help: ## Show this help message
+	@echo "Available commands:"
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}'
+
+start: ## Start all infrastructure (database + blockchain)
+	docker compose up -d
+	@echo "Waiting for services to be ready..."
+	@sleep 5
+	@echo "Infrastructure started! Check status with: make status"
+
+stop: ## Stop all infrastructure
+	docker compose down
+
+restart: ## Restart all infrastructure (keeps data)
+	docker compose restart
+
+reset: ## Complete reset (destroys all data, redeploys contracts)
+	@./scripts/reset-all.sh
+
+deploy: ## Deploy smart contracts to Anvil
+	@./scripts/deploy-contracts.sh
+
+logs: ## Follow logs from all containers
+	docker compose logs -f
+
+status: ## Show status of all containers
+	docker compose ps
+
+db-reset: ## Reset database only (keep blockchain state)
+	@./scripts/reset-db.sh
+
+test: ## Run all tests (Next.js + Foundry)
+	npm test
+	cd contracts && forge test
+
+test-watch: ## Run tests in watch mode
+	npm run test:watch
+
+clean: ## Remove all containers, volumes, and build artifacts
+	docker compose down -v
+	rm -rf node_modules
+	rm -rf contracts/out contracts/cache
+	@echo "Cleaned! Run 'make setup' to reinitialize."
+
+setup: ## Initial project setup
+	@./scripts/setup-dev.sh
+
+dev: ## Start Next.js dev server
+	npm run dev
+```
+
 ---
 
 ## Testing Strategy
@@ -1237,13 +1353,41 @@ echo "Database reset complete!"
 
 ## Development Workflow
 
-### Local Development Loop
+### Quick Start (Recommended)
+
+**Using Makefile shortcuts:**
+```bash
+# Full infrastructure reset (fresh start)
+make reset
+
+# Start Next.js dev server
+make dev
+```
+
+**All available commands:**
+```bash
+make help          # Show all available commands
+make reset         # Complete reset (DB + contracts + volumes)
+make start         # Start infrastructure only
+make stop          # Stop infrastructure
+make restart       # Restart (keeps data)
+make deploy        # Deploy contracts to Anvil
+make test          # Run all tests
+make logs          # Follow container logs
+make status        # Show container status
+make db-reset      # Reset database only
+make clean         # Remove everything (containers + artifacts)
+make setup         # Initial project setup
+```
+
+### Traditional Workflow (Without Makefile)
 1. Start infrastructure: `docker compose up -d`
 2. Deploy contracts: `./scripts/deploy-contracts.sh` (only needed once or after contract changes)
 3. Start Next.js: `npm run dev`
 4. Make changes
 5. Run tests: `npm test` (Vitest) or `cd contracts && forge test` (Foundry)
 6. Reset DB if needed: `./scripts/reset-db.sh`
+7. Full reset if needed: `./scripts/reset-all.sh`
 
 ### Git Workflow
 - Main branch: `main`

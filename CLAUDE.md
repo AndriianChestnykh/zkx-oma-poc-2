@@ -643,8 +643,44 @@ cd contracts && forge install && cd ..
 npm run dev
 ```
 
-### Daily Development Loop
+### Quick Commands (via Makefile)
 
+**Recommended workflow using Makefile:**
+```bash
+make help          # Show all available commands
+make reset         # Full reset (DB + contracts + volumes)
+make start         # Start infrastructure
+make stop          # Stop infrastructure
+make deploy        # Deploy contracts only
+make test          # Run all tests
+make logs          # Follow container logs
+make dev           # Start Next.js dev server
+make status        # Show container status
+```
+
+**Common workflows:**
+```bash
+# Fresh start (when things are broken)
+make reset && make dev
+
+# Normal development
+make start          # Start infrastructure
+make dev            # Start Next.js
+
+# Run tests
+make test           # All tests
+make test-watch     # Watch mode
+
+# Infrastructure management
+make logs           # View container logs
+make status         # Check container health
+make restart        # Restart containers (keeps data)
+make db-reset       # Reset database only
+```
+
+### Manual Commands (Without Makefile)
+
+If you prefer not to use Makefile:
 ```bash
 # Start infrastructure (if not running)
 docker compose up -d
@@ -663,6 +699,9 @@ cd contracts && forge test && cd ..
 
 # Reset database if needed
 ./scripts/reset-db.sh
+
+# Full infrastructure reset
+./scripts/reset-all.sh
 ```
 
 ### Running Tests
@@ -942,31 +981,93 @@ docker restart oma-anvil
 - Check Solidity version in `foundry.toml`
 - Verbose output: `forge test -vvv`
 
+### Infrastructure Out of Sync
+
+**Symptom**: Contracts not responding, database state incorrect, weird errors, or general instability
+
+**Solution - Nuclear Option (Recommended)**:
+```bash
+# Complete infrastructure reset
+make reset
+
+# Then start development
+make dev
+```
+
+**What this does**:
+1. Stops and removes all containers
+2. Deletes all volumes (database data + Anvil state)
+3. Restarts containers with fresh state
+4. Redeploys contracts to Anvil
+5. Reinitializes database with schema and seed data
+
+**Manual alternative** (without Makefile):
+```bash
+./scripts/reset-all.sh
+npm run dev
+```
+
+**When to use**:
+- After pulling major changes from git
+- When contract addresses are stale
+- When database schema is out of sync
+- When "nothing works" and you need a fresh start
+- Before reporting a bug (to rule out local state issues)
+
+**Recovery time**: Under 2 minutes from broken state to working application
+
 ---
 
 ## Quick Reference
 
-### Common Commands
+### Infrastructure Commands (Makefile)
+
+| Command | Description |
+|---------|-------------|
+| `make help` | Show all available commands |
+| `make reset` | Complete reset (destroys all data, redeploys contracts) |
+| `make start` | Start all containers |
+| `make stop` | Stop all containers |
+| `make restart` | Restart containers (keeps data) |
+| `make deploy` | Deploy smart contracts to Anvil |
+| `make status` | Show container status |
+| `make logs` | Follow container logs |
+| `make db-reset` | Reset database only (keep blockchain state) |
+| `make clean` | Remove all containers, volumes, and build artifacts |
+| `make setup` | Initial project setup |
+
+### Development Commands (Makefile)
+
+| Command | Description |
+|---------|-------------|
+| `make dev` | Start Next.js dev server |
+| `make test` | Run all tests (Next.js + Foundry) |
+| `make test-watch` | Run tests in watch mode |
+
+### Manual Commands (Without Makefile)
 
 ```bash
-# Development
-npm run dev                  # Start Next.js dev server
+# Infrastructure
+./scripts/reset-all.sh       # Complete infrastructure reset
+./scripts/reset-db.sh        # Reset database only
+./scripts/deploy-contracts.sh # Deploy contracts to Anvil
 docker compose up -d         # Start infrastructure
 docker compose down          # Stop infrastructure
+
+# Development
+npm run dev                  # Start Next.js dev server
 
 # Testing
 npm test                     # Run Vitest tests
 npm run test:watch           # Watch mode
 cd contracts && forge test   # Run contract tests
+cd contracts && forge test -vvv # Verbose test output
 
 # Database
-./scripts/reset-db.sh        # Reset database
 docker exec -it oma-postgres psql -U oma_user -d oma_poc
 
 # Contracts
-./scripts/deploy-contracts.sh   # Deploy to Anvil
-cd contracts && forge build     # Compile contracts
-cd contracts && forge test -vvv # Verbose test output
+cd contracts && forge build  # Compile contracts
 
 # Utilities
 docker compose ps            # Check container status
