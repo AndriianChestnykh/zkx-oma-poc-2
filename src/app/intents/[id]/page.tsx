@@ -1,15 +1,25 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { Card, CardContent, CardHeader } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { IntentStatusBadge } from "@/components/intents/IntentStatusBadge";
+import { getIntentById } from "@/lib/db/intents";
+import { formatAddress, formatDate, formatWeiToEth } from "@/lib/utils/formatters";
 
-export default function IntentDetailPage({
+export default async function IntentDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  // Note: params is now a Promise in Next.js 15
-  // In a real implementation, we'd await params and fetch intent data
+  const { id } = await params;
+
+  // Fetch intent from database
+  let intent;
+  try {
+    intent = await getIntentById(id);
+  } catch (error) {
+    notFound();
+  }
 
   return (
     <div className="space-y-6">
@@ -36,12 +46,12 @@ export default function IntentDetailPage({
         </Link>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Intent Details</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Intent #{intent.id.slice(0, 8)}</h1>
             <p className="mt-2 text-sm text-gray-600">
               View intent information and audit timeline
             </p>
           </div>
-          <Badge variant="info">Created</Badge>
+          <IntentStatusBadge status={intent.status} />
         </div>
       </div>
 
@@ -57,48 +67,74 @@ export default function IntentDetailPage({
             <div>
               <dt className="text-sm font-medium text-gray-500">User Address</dt>
               <dd className="mt-1 text-sm text-gray-900 font-mono">
-                0x0000...0000
+                {formatAddress(intent.user_address)}
               </dd>
             </div>
             <div>
               <dt className="text-sm font-medium text-gray-500">Status</dt>
               <dd className="mt-1">
-                <Badge variant="info">Created</Badge>
+                <IntentStatusBadge status={intent.status} />
               </dd>
             </div>
             <div>
               <dt className="text-sm font-medium text-gray-500">Asset In</dt>
               <dd className="mt-1 text-sm text-gray-900 font-mono">
-                0x0000...0000
+                {formatAddress(intent.asset_in)}
               </dd>
             </div>
             <div>
               <dt className="text-sm font-medium text-gray-500">Asset Out</dt>
               <dd className="mt-1 text-sm text-gray-900 font-mono">
-                0x0000...0000
+                {formatAddress(intent.asset_out)}
               </dd>
             </div>
             <div>
               <dt className="text-sm font-medium text-gray-500">Amount In</dt>
-              <dd className="mt-1 text-sm text-gray-900">1.0 ETH</dd>
+              <dd className="mt-1 text-sm text-gray-900">
+                {formatWeiToEth(intent.amount_in)} ({intent.amount_in} wei)
+              </dd>
             </div>
             <div>
               <dt className="text-sm font-medium text-gray-500">Min Amount Out</dt>
-              <dd className="mt-1 text-sm text-gray-900">1.0 ETH</dd>
+              <dd className="mt-1 text-sm text-gray-900">
+                {formatWeiToEth(intent.amount_out_min)} ({intent.amount_out_min} wei)
+              </dd>
             </div>
             <div>
               <dt className="text-sm font-medium text-gray-500">Venue</dt>
-              <dd className="mt-1 text-sm text-gray-900">Uniswap V3</dd>
+              <dd className="mt-1 text-sm text-gray-900">{intent.venue}</dd>
             </div>
             <div>
               <dt className="text-sm font-medium text-gray-500">Nonce</dt>
-              <dd className="mt-1 text-sm text-gray-900">0</dd>
+              <dd className="mt-1 text-sm text-gray-900">{intent.nonce}</dd>
             </div>
+            <div>
+              <dt className="text-sm font-medium text-gray-500">Deadline</dt>
+              <dd className="mt-1 text-sm text-gray-900">
+                {formatDate(new Date(intent.deadline * 1000))}
+              </dd>
+            </div>
+            <div>
+              <dt className="text-sm font-medium text-gray-500">Created At</dt>
+              <dd className="mt-1 text-sm text-gray-900">
+                {formatDate(intent.created_at)}
+              </dd>
+            </div>
+            {intent.signature && (
+              <div className="col-span-2">
+                <dt className="text-sm font-medium text-gray-500">Signature</dt>
+                <dd className="mt-1 text-sm text-gray-900 font-mono break-all">
+                  {intent.signature}
+                </dd>
+              </div>
+            )}
           </dl>
 
           <div className="mt-6 flex gap-4">
-            <Button variant="secondary">Validate Policies</Button>
-            <Button disabled>Execute</Button>
+            <Button variant="secondary" disabled>
+              Validate Policies (Step 3)
+            </Button>
+            <Button disabled>Execute (Step 4)</Button>
           </div>
         </CardContent>
       </Card>
@@ -110,41 +146,10 @@ export default function IntentDetailPage({
         </CardHeader>
         <CardContent>
           <div className="text-center py-6 text-sm text-gray-500">
-            Audit timeline will be implemented in later steps
+            Audit timeline will be implemented in Steps 3 and 4
           </div>
         </CardContent>
       </Card>
-
-      {/* Info */}
-      <div className="rounded-md bg-blue-50 p-4">
-        <div className="flex">
-          <div className="flex-shrink-0">
-            <svg
-              className="h-5 w-5 text-blue-400"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </div>
-          <div className="ml-3">
-            <h3 className="text-sm font-medium text-blue-800">
-              Step 1: Placeholder
-            </h3>
-            <div className="mt-2 text-sm text-blue-700">
-              <p>
-                This is a placeholder page. Actual intent data will be loaded from the
-                database in Step 2, and policy validation/execution will be added in
-                Steps 3 and 4.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

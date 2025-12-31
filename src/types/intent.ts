@@ -32,4 +32,5 @@ export interface IntentInput {
   deadline: number;
   nonce: number;
   signature?: string;
+  status?: IntentStatus;
 }
