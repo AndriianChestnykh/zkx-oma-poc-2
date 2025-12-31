@@ -5,14 +5,14 @@ export type PolicyType =
   | 'custom';
 
 export interface AllowDenyListConfig {
-  mode: 'allowlist' | 'denylist';
+  mode: 'allow' | 'deny';
   addresses: string[];
 }
 
 export interface TradeLimitConfig {
-  asset: string;
-  max_amount: string;
-  period_seconds: number;
+  min_amount?: string;
+  max_amount?: string;
+  asset?: string;
 }
 
 export interface VenueAllowlistConfig {

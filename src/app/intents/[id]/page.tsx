@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Card, CardContent, CardHeader } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
 import { IntentStatusBadge } from "@/components/intents/IntentStatusBadge";
+import { IntentValidation } from "@/components/intents/IntentValidation";
 import { getIntentById } from "@/lib/db/intents";
+import { getAuditTrail } from "@/lib/db/audit";
 import { formatAddress, formatDate, formatWeiToEth } from "@/lib/utils/formatters";
 
 export default async function IntentDetailPage({
@@ -13,10 +14,12 @@ export default async function IntentDetailPage({
 }) {
   const { id } = await params;
 
-  // Fetch intent from database
+  // Fetch intent and audit trail from database
   let intent;
+  let auditTrail;
   try {
     intent = await getIntentById(id);
+    auditTrail = await getAuditTrail(id);
   } catch (error) {
     notFound();
   }
@@ -130,24 +133,60 @@ export default async function IntentDetailPage({
             )}
           </dl>
 
-          <div className="mt-6 flex gap-4">
-            <Button variant="secondary" disabled>
-              Validate Policies (Step 3)
-            </Button>
-            <Button disabled>Execute (Step 4)</Button>
-          </div>
         </CardContent>
       </Card>
 
-      {/* Audit Timeline Placeholder */}
+      {/* Validation Section */}
+      <Card>
+        <CardHeader>
+          <h2 className="text-lg font-semibold text-gray-900">Policy Validation</h2>
+        </CardHeader>
+        <CardContent>
+          <IntentValidation intent={intent} />
+        </CardContent>
+      </Card>
+
+      {/* Audit Timeline */}
       <Card>
         <CardHeader>
           <h2 className="text-lg font-semibold text-gray-900">Audit Timeline</h2>
         </CardHeader>
         <CardContent>
-          <div className="text-center py-6 text-sm text-gray-500">
-            Audit timeline will be implemented in Steps 3 and 4
-          </div>
+          {auditTrail.length === 0 ? (
+            <div className="text-center py-6 text-sm text-gray-500">
+              No audit artifacts yet
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {auditTrail.map((artifact) => (
+                <div
+                  key={artifact.id}
+                  className="border-l-4 border-l-blue-500 pl-4 py-2"
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-medium text-sm text-gray-900">
+                          {artifact.artifact_type.replace(/_/g, ' ').toUpperCase()}
+                        </span>
+                        <span className="text-xs text-gray-500">
+                          {formatDate(artifact.created_at)}
+                        </span>
+                      </div>
+                      <details className="text-sm text-gray-700">
+                        <summary className="cursor-pointer hover:text-gray-900">
+                          View Details
+                        </summary>
+                        <pre className="mt-2 p-2 bg-gray-50 rounded text-xs overflow-x-auto">
+                          {JSON.stringify(artifact.data, null, 2)}
+                        </pre>
+                      </details>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

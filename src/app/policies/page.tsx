@@ -1,39 +1,8 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
+import Link from "next/link";
 import { Button } from "@/components/ui/Button";
+import { PolicyList } from "@/components/policies/PolicyList";
 
 export default function PoliciesPage() {
-  // Mock data - will be replaced with actual API call in Step 3
-  const policies = [
-    {
-      id: 1,
-      name: "Sanctioned Addresses Blocklist",
-      type: "allow_deny_list",
-      enabled: true,
-      priority: 5,
-    },
-    {
-      id: 2,
-      name: "Approved Venues Only",
-      type: "venue_allowlist",
-      enabled: true,
-      priority: 10,
-    },
-    {
-      id: 3,
-      name: "Approved Assets Allowlist",
-      type: "allow_deny_list",
-      enabled: true,
-      priority: 20,
-    },
-    {
-      id: 4,
-      name: "Daily Trade Limit - WETH",
-      type: "trade_limit",
-      enabled: true,
-      priority: 30,
-    },
-  ];
 
   return (
     <div className="space-y-6">
@@ -45,48 +14,13 @@ export default function PoliciesPage() {
             Configure compliance policies and trading rules
           </p>
         </div>
-        <Button disabled>Create Policy</Button>
+        <Link href="/policies/new">
+          <Button>Create Policy</Button>
+        </Link>
       </div>
 
       {/* Policies List */}
-      <Card>
-        <CardHeader>
-          <h2 className="text-lg font-semibold text-gray-900">Active Policies</h2>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {policies.map((policy) => (
-              <div
-                key={policy.id}
-                className="flex items-center justify-between p-4 border border-gray-200 rounded-md hover:border-gray-300 transition-colors"
-              >
-                <div className="flex-1">
-                  <div className="flex items-center gap-3">
-                    <h3 className="text-sm font-semibold text-gray-900">
-                      {policy.name}
-                    </h3>
-                    <Badge variant="success" size="sm">
-                      Active
-                    </Badge>
-                  </div>
-                  <div className="mt-1 flex items-center gap-4 text-xs text-gray-500">
-                    <span>Type: {policy.type}</span>
-                    <span>Priority: {policy.priority}</span>
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <Button variant="ghost" size="sm" disabled>
-                    Edit
-                  </Button>
-                  <Button variant="ghost" size="sm" disabled>
-                    Disable
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      <PolicyList />
 
       {/* Info */}
       <div className="rounded-md bg-purple-50 p-4">
@@ -110,8 +44,8 @@ export default function PoliciesPage() {
             </h3>
             <div className="mt-2 text-sm text-purple-700">
               <p>
-                Policies are evaluated in priority order (lower = first). Policy
-                management functionality will be implemented in Step 3.
+                Policies are evaluated in priority order (lower = first). All enabled
+                policies must pass for an intent to be validated.
               </p>
             </div>
           </div>

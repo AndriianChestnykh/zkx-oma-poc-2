@@ -103,3 +103,84 @@ export type CreateIntentInput = z.infer<typeof createIntentSchema>;
 export type UpdateIntentInput = z.infer<typeof updateIntentSchema>;
 export type UpdateSignatureInput = z.infer<typeof updateSignatureSchema>;
 export type IntentListQuery = z.infer<typeof intentListQuerySchema>;
+
+/**
+ * Policy Validation Schemas
+ */
+
+// Policy type enum
+export const policyTypeSchema = z.enum([
+  'allow_deny_list',
+  'trade_limit',
+  'venue_allowlist',
+  'custom',
+]);
+
+// Allow/Deny list config schema
+const allowDenyListConfigSchema = z.object({
+  mode: z.enum(['allow', 'deny']),
+  addresses: z.array(ethereumAddressSchema),
+});
+
+// Trade limit config schema
+const tradeLimitConfigSchema = z.object({
+  min_amount: positiveAmountSchema.optional(),
+  max_amount: positiveAmountSchema.optional(),
+  asset: ethereumAddressSchema.optional(),
+});
+
+// Venue allowlist config schema
+const venueAllowlistConfigSchema = z.object({
+  allowed_venues: z.array(z.string().min(1)),
+});
+
+// Custom config schema (allows any JSON)
+const customConfigSchema = z.record(z.any());
+
+/**
+ * Schema for creating a new policy
+ */
+export const createPolicySchema = z.object({
+  name: z.string().min(1, 'Name is required').max(200),
+  description: z.string().max(1000).optional(),
+  policy_type: policyTypeSchema,
+  config: z.union([
+    allowDenyListConfigSchema,
+    tradeLimitConfigSchema,
+    venueAllowlistConfigSchema,
+    customConfigSchema,
+  ]),
+  enabled: z.boolean().optional(),
+  priority: z.number().int().min(0).optional(),
+});
+
+/**
+ * Schema for updating a policy
+ */
+export const updatePolicySchema = z.object({
+  name: z.string().min(1).max(200).optional(),
+  description: z.string().max(1000).optional(),
+  policy_type: policyTypeSchema.optional(),
+  config: z.union([
+    allowDenyListConfigSchema,
+    tradeLimitConfigSchema,
+    venueAllowlistConfigSchema,
+    customConfigSchema,
+  ]).optional(),
+  enabled: z.boolean().optional(),
+  priority: z.number().int().min(0).optional(),
+});
+
+/**
+ * Schema for policy list query parameters
+ */
+export const policyListQuerySchema = z.object({
+  enabled: z.coerce.boolean().optional(),
+  policyType: policyTypeSchema.optional(),
+  limit: z.coerce.number().int().min(1).max(100).optional(),
+  offset: z.coerce.number().int().min(0).optional(),
+});
+
+export type CreatePolicyInput = z.infer<typeof createPolicySchema>;
+export type UpdatePolicyInput = z.infer<typeof updatePolicySchema>;
+export type PolicyListQuery = z.infer<typeof policyListQuerySchema>;
