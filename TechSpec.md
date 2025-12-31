@@ -34,11 +34,16 @@ This Proof of Concept (PoC) demonstrates an end-to-end **trade intent → policy
 - **Database:** PostgreSQL  
   - Tables: `intents`, `policies`, `executions`, `audit_artifacts`  
   - Stored data includes tx hash, block number, decoded events, timestamps, and policy evaluation results  
+  - Avoid complex ORM; use raw SQL
 
 - **Blockchain:** Foundry (Anvil) + Solidity  
   - `OMAAccount` with `executeIntent()`  
   - `PolicyModule` enforced on the execution require-path  
-  - `VenueAdapterMock` emitting `TradeExecuted` events  
+  - `VenueAdapterMock` emitting `TradeExecuted` events
+
+- **Infrastructure:**  
+  - Docker for containerization
+  - Containerized Postgres and Anvil instances for local development
 
 ## Deliverables & Acceptance Criteria
 
