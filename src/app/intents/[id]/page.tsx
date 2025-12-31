@@ -3,8 +3,12 @@ import { notFound } from "next/navigation";
 import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import { IntentStatusBadge } from "@/components/intents/IntentStatusBadge";
 import { IntentValidation } from "@/components/intents/IntentValidation";
+import { IntentExecuteButton } from "@/components/execution/IntentExecuteButton";
+import { ExecutionDetails } from "@/components/execution/ExecutionDetails";
+import { BlockchainEventCard } from "@/components/execution/BlockchainEventCard";
 import { getIntentById } from "@/lib/db/intents";
 import { getAuditTrail } from "@/lib/db/audit";
+import { getExecutionByIntentId } from "@/lib/db/executions";
 import { formatAddress, formatDate, formatWeiToEth } from "@/lib/utils/formatters";
 
 export default async function IntentDetailPage({
@@ -14,12 +18,14 @@ export default async function IntentDetailPage({
 }) {
   const { id } = await params;
 
-  // Fetch intent and audit trail from database
+  // Fetch intent, audit trail, and execution from database
   let intent;
   let auditTrail;
+  let execution;
   try {
     intent = await getIntentById(id);
     auditTrail = await getAuditTrail(id);
+    execution = await getExecutionByIntentId(id);
   } catch (error) {
     notFound();
   }
@@ -146,6 +152,26 @@ export default async function IntentDetailPage({
         </CardContent>
       </Card>
 
+      {/* Execute Button (only for validated intents) */}
+      {intent.status === 'validated' && (
+        <Card>
+          <CardHeader>
+            <h2 className="text-lg font-semibold text-gray-900">Execute Intent</h2>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-gray-600 mb-4">
+              This intent has passed all policy validations and is ready to be executed on-chain.
+            </p>
+            <IntentExecuteButton intentId={intent.id} intentStatus={intent.status} />
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Execution Details (if executed) */}
+      {execution && (
+        <ExecutionDetails execution={execution} />
+      )}
+
       {/* Audit Timeline */}
       <Card>
         <CardHeader>
@@ -158,33 +184,53 @@ export default async function IntentDetailPage({
             </div>
           ) : (
             <div className="space-y-4">
-              {auditTrail.map((artifact) => (
-                <div
-                  key={artifact.id}
-                  className="border-l-4 border-l-blue-500 pl-4 py-2"
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-medium text-sm text-gray-900">
-                          {artifact.artifact_type.replace(/_/g, ' ').toUpperCase()}
-                        </span>
-                        <span className="text-xs text-gray-500">
-                          {formatDate(artifact.created_at)}
-                        </span>
+              {auditTrail.map((artifact) => {
+                // Special rendering for blockchain events
+                if (artifact.artifact_type === 'event_decoded' && artifact.data) {
+                  return (
+                    <div key={artifact.id}>
+                      <div className="text-xs text-gray-500 mb-2">
+                        {formatDate(artifact.created_at)}
                       </div>
-                      <details className="text-sm text-gray-700">
-                        <summary className="cursor-pointer hover:text-gray-900">
-                          View Details
-                        </summary>
-                        <pre className="mt-2 p-2 bg-gray-50 rounded text-xs overflow-x-auto">
-                          {JSON.stringify(artifact.data, null, 2)}
-                        </pre>
-                      </details>
+                      <BlockchainEventCard
+                        eventName={(artifact.data as any).eventName || 'Unknown Event'}
+                        args={(artifact.data as any).args || {}}
+                        blockNumber={(artifact.data as any).blockNumber}
+                        logIndex={(artifact.data as any).logIndex}
+                      />
+                    </div>
+                  );
+                }
+
+                // Default rendering for other artifacts
+                return (
+                  <div
+                    key={artifact.id}
+                    className="border-l-4 border-l-blue-500 pl-4 py-2"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="font-medium text-sm text-gray-900">
+                            {artifact.artifact_type.replace(/_/g, ' ').toUpperCase()}
+                          </span>
+                          <span className="text-xs text-gray-500">
+                            {formatDate(artifact.created_at)}
+                          </span>
+                        </div>
+                        <details className="text-sm text-gray-700">
+                          <summary className="cursor-pointer hover:text-gray-900">
+                            View Details
+                          </summary>
+                          <pre className="mt-2 p-2 bg-gray-50 rounded text-xs overflow-x-auto">
+                            {JSON.stringify(artifact.data, null, 2)}
+                          </pre>
+                        </details>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </CardContent>
