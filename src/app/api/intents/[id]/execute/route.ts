@@ -63,26 +63,26 @@ export async function POST(
       });
     }
 
-    // 7. Handle execution result
+    // 7. Helper to convert BigInts to strings recursively
+    const convertBigInts = (obj: any): any => {
+      if (obj === null || obj === undefined) return obj;
+      if (typeof obj === 'bigint') return obj.toString();
+      if (Array.isArray(obj)) return obj.map(convertBigInts);
+      if (typeof obj === 'object') {
+        return Object.fromEntries(
+          Object.entries(obj).map(([key, value]) => [key, convertBigInts(value)])
+        );
+      }
+      return obj;
+    };
+
+    // 8. Handle execution result
     if (executionResult.success && executionResult.txHash) {
       // Success case
       console.log('Execution successful, tx:', executionResult.txHash);
 
       // Decode events from transaction
       const events = await getTransactionEvents(executionResult.txHash);
-
-      // Helper to convert BigInts to strings recursively
-      const convertBigInts = (obj: any): any => {
-        if (obj === null || obj === undefined) return obj;
-        if (typeof obj === 'bigint') return obj.toString();
-        if (Array.isArray(obj)) return obj.map(convertBigInts);
-        if (typeof obj === 'object') {
-          return Object.fromEntries(
-            Object.entries(obj).map(([key, value]) => [key, convertBigInts(value)])
-          );
-        }
-        return obj;
-      };
 
       // Create audit artifacts for each event
       for (const event of events) {
@@ -115,8 +115,8 @@ export async function POST(
       return NextResponse.json({
         success: true,
         data: {
-          executionResult,
-          events,
+          executionResult: convertBigInts(executionResult),
+          events: convertBigInts(events),
           newStatus: 'executed',
         },
         message: 'Intent executed successfully on-chain',
@@ -156,7 +156,7 @@ export async function POST(
           error: executionResult.error || 'Execution failed',
           revertReason: executionResult.revertReason,
           data: {
-            executionResult,
+            executionResult: convertBigInts(executionResult),
             newStatus: 'failed',
           },
         },
