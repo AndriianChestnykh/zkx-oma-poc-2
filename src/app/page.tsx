@@ -1,8 +1,45 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import Link from "next/link";
 import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 
+interface IntentStats {
+  total: number;
+  created: number;
+  validated: number;
+  executing: number;
+  executed: number;
+  rejected: number;
+  failed: number;
+}
+
 export default function Home() {
+  const [stats, setStats] = useState<IntentStats | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchStats() {
+      try {
+        const response = await fetch('/api/stats');
+        if (!response.ok) {
+          throw new Error('Failed to fetch statistics');
+        }
+        const data = await response.json();
+        setStats(data.stats);
+      } catch (err) {
+        console.error('Error fetching stats:', err);
+        setError(err instanceof Error ? err.message : 'Unknown error');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchStats();
+  }, []);
+
   return (
     <div className="space-y-6">
       {/* Page Header */}
@@ -13,14 +50,26 @@ export default function Home() {
         </p>
       </div>
 
+      {/* Error State */}
+      {error && (
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-red-600 text-sm">
+              Error loading statistics: {error}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Stats Grid */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Total Intents */}
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <div className="h-12 w-12 rounded-md bg-blue-500 flex items-center justify-center text-white text-xl font-bold">
-                  0
+                  {loading ? '...' : stats?.total || 0}
                 </div>
               </div>
               <div className="ml-5 w-0 flex-1">
@@ -28,19 +77,91 @@ export default function Home() {
                   <dt className="text-sm font-medium text-gray-500 truncate">
                     Total Intents
                   </dt>
-                  <dd className="text-lg font-semibold text-gray-900">0</dd>
+                  <dd className="text-lg font-semibold text-gray-900">
+                    {loading ? 'Loading...' : stats?.total || 0}
+                  </dd>
                 </dl>
               </div>
             </div>
           </CardContent>
         </Card>
 
+        {/* Created */}
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <div className="h-12 w-12 rounded-md bg-gray-500 flex items-center justify-center text-white text-xl font-bold">
+                  {loading ? '...' : stats?.created || 0}
+                </div>
+              </div>
+              <div className="ml-5 w-0 flex-1">
+                <dl>
+                  <dt className="text-sm font-medium text-gray-500 truncate">
+                    Created
+                  </dt>
+                  <dd className="text-lg font-semibold text-gray-900">
+                    {loading ? 'Loading...' : stats?.created || 0}
+                  </dd>
+                </dl>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Validated */}
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <div className="h-12 w-12 rounded-md bg-indigo-500 flex items-center justify-center text-white text-xl font-bold">
+                  {loading ? '...' : stats?.validated || 0}
+                </div>
+              </div>
+              <div className="ml-5 w-0 flex-1">
+                <dl>
+                  <dt className="text-sm font-medium text-gray-500 truncate">
+                    Validated
+                  </dt>
+                  <dd className="text-lg font-semibold text-gray-900">
+                    {loading ? 'Loading...' : stats?.validated || 0}
+                  </dd>
+                </dl>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Executing */}
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <div className="h-12 w-12 rounded-md bg-yellow-500 flex items-center justify-center text-white text-xl font-bold">
+                  {loading ? '...' : stats?.executing || 0}
+                </div>
+              </div>
+              <div className="ml-5 w-0 flex-1">
+                <dl>
+                  <dt className="text-sm font-medium text-gray-500 truncate">
+                    Executing
+                  </dt>
+                  <dd className="text-lg font-semibold text-gray-900">
+                    {loading ? 'Loading...' : stats?.executing || 0}
+                  </dd>
+                </dl>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Executed */}
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <div className="h-12 w-12 rounded-md bg-green-500 flex items-center justify-center text-white text-xl font-bold">
-                  0
+                  {loading ? '...' : stats?.executed || 0}
                 </div>
               </div>
               <div className="ml-5 w-0 flex-1">
@@ -48,47 +169,55 @@ export default function Home() {
                   <dt className="text-sm font-medium text-gray-500 truncate">
                     Executed
                   </dt>
-                  <dd className="text-lg font-semibold text-gray-900">0</dd>
+                  <dd className="text-lg font-semibold text-gray-900">
+                    {loading ? 'Loading...' : stats?.executed || 0}
+                  </dd>
                 </dl>
               </div>
             </div>
           </CardContent>
         </Card>
 
+        {/* Rejected */}
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <div className="h-12 w-12 rounded-md bg-yellow-500 flex items-center justify-center text-white text-xl font-bold">
-                  0
+                <div className="h-12 w-12 rounded-md bg-red-500 flex items-center justify-center text-white text-xl font-bold">
+                  {loading ? '...' : stats?.rejected || 0}
                 </div>
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
                   <dt className="text-sm font-medium text-gray-500 truncate">
-                    Pending
+                    Rejected
                   </dt>
-                  <dd className="text-lg font-semibold text-gray-900">0</dd>
+                  <dd className="text-lg font-semibold text-gray-900">
+                    {loading ? 'Loading...' : stats?.rejected || 0}
+                  </dd>
                 </dl>
               </div>
             </div>
           </CardContent>
         </Card>
 
+        {/* Failed */}
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <div className="h-12 w-12 rounded-md bg-purple-500 flex items-center justify-center text-white text-xl font-bold">
-                  4
+                <div className="h-12 w-12 rounded-md bg-orange-500 flex items-center justify-center text-white text-xl font-bold">
+                  {loading ? '...' : stats?.failed || 0}
                 </div>
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
                   <dt className="text-sm font-medium text-gray-500 truncate">
-                    Active Policies
+                    Failed
                   </dt>
-                  <dd className="text-lg font-semibold text-gray-900">4</dd>
+                  <dd className="text-lg font-semibold text-gray-900">
+                    {loading ? 'Loading...' : stats?.failed || 0}
+                  </dd>
                 </dl>
               </div>
             </div>
