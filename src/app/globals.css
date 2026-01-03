@@ -2,21 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Light mode (fallback) */
+    --background: 0 0% 100%;           /* white */
+    --foreground: 222 47% 11%;         /* slate-900 */
+    --surface: 0 0% 100%;              /* white */
+    --surface-elevated: 0 0% 98%;      /* gray-50 */
+    --muted: 210 40% 96%;              /* slate-100 */
+    --muted-foreground: 215 16% 47%;   /* slate-600 */
+    --subtle: 215 20% 65%;             /* slate-400 */
+    --border-default: 214 32% 91%;     /* slate-200 */
+    --border-subtle: 214 32% 91%;      /* slate-200 */
+    --primary: 217 91% 60%;            /* blue-500 */
+    --primary-foreground: 0 0% 100%;   /* white */
+    --accent: 142 76% 36%;             /* green-600 */
+    --accent-foreground: 0 0% 100%;    /* white */
+    --success: 142 76% 36%;            /* green-600 */
+    --danger: 0 84% 60%;               /* red-500 */
+    --warning: 45 93% 47%;             /* yellow-500 */
+    --info: 217 91% 60%;               /* blue-500 */
+    --ring: 217 91% 60%;               /* blue-500 */
+  }
+
+  .dark {
+    /* Dark mode (default) */
+    --background: 222 47% 11%;         /* deep slate */
+    --foreground: 210 40% 98%;         /* light gray */
+    --surface: 217 33% 17%;            /* slate-800 */
+    --surface-elevated: 215 28% 22%;   /* slate-700 */
+    --muted: 217 19% 27%;              /* slate-600 */
+    --muted-foreground: 215 20% 65%;   /* slate-400 */
+    --subtle: 215 16% 47%;             /* slate-500 */
+    --border-default: 215 28% 22%;     /* slate-700 */
+    --border-subtle: 217 19% 27%;      /* slate-600 */
+    --primary: 217 91% 60%;            /* bright blue */
+    --primary-foreground: 222 47% 11%; /* dark background */
+    --accent: 142 70% 45%;             /* green-500 */
+    --accent-foreground: 0 0% 100%;    /* white */
+    --success: 142 70% 45%;            /* green-500 */
+    --danger: 0 72% 51%;               /* red-600 */
+    --warning: 45 93% 47%;             /* yellow-500 */
+    --info: 217 91% 60%;               /* blue-500 */
+    --ring: 217 91% 60%;               /* blue-500 */
   }
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  @apply bg-background text-foreground;
   font-family: Arial, Helvetica, sans-serif;
 }
 

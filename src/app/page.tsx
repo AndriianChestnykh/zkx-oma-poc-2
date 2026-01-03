@@ -44,8 +44,8 @@ export default function Home() {
     <div className="space-y-6">
       {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-        <p className="mt-2 text-sm text-gray-600">
+        <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
+        <p className="mt-2 text-sm text-muted-foreground">
           Welcome to the ZKX OMA Proof of Concept
         </p>
       </div>
@@ -54,7 +54,7 @@ export default function Home() {
       {error && (
         <Card>
           <CardContent className="pt-6">
-            <div className="text-red-600 text-sm">
+            <div className="text-danger text-sm">
               Error loading statistics: {error}
             </div>
           </CardContent>
@@ -74,10 +74,10 @@ export default function Home() {
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">
+                  <dt className="text-sm font-medium text-muted-foreground truncate">
                     Total Intents
                   </dt>
-                  <dd className="text-lg font-semibold text-gray-900">
+                  <dd className="text-lg font-semibold text-foreground">
                     {loading ? 'Loading...' : stats?.total || 0}
                   </dd>
                 </dl>
@@ -97,10 +97,10 @@ export default function Home() {
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">
+                  <dt className="text-sm font-medium text-muted-foreground truncate">
                     Created
                   </dt>
-                  <dd className="text-lg font-semibold text-gray-900">
+                  <dd className="text-lg font-semibold text-foreground">
                     {loading ? 'Loading...' : stats?.created || 0}
                   </dd>
                 </dl>
@@ -120,10 +120,10 @@ export default function Home() {
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">
+                  <dt className="text-sm font-medium text-muted-foreground truncate">
                     Validated
                   </dt>
-                  <dd className="text-lg font-semibold text-gray-900">
+                  <dd className="text-lg font-semibold text-foreground">
                     {loading ? 'Loading...' : stats?.validated || 0}
                   </dd>
                 </dl>
@@ -143,10 +143,10 @@ export default function Home() {
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">
+                  <dt className="text-sm font-medium text-muted-foreground truncate">
                     Executing
                   </dt>
-                  <dd className="text-lg font-semibold text-gray-900">
+                  <dd className="text-lg font-semibold text-foreground">
                     {loading ? 'Loading...' : stats?.executing || 0}
                   </dd>
                 </dl>
@@ -166,10 +166,10 @@ export default function Home() {
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">
+                  <dt className="text-sm font-medium text-muted-foreground truncate">
                     Executed
                   </dt>
-                  <dd className="text-lg font-semibold text-gray-900">
+                  <dd className="text-lg font-semibold text-foreground">
                     {loading ? 'Loading...' : stats?.executed || 0}
                   </dd>
                 </dl>
@@ -189,10 +189,10 @@ export default function Home() {
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">
+                  <dt className="text-sm font-medium text-muted-foreground truncate">
                     Rejected
                   </dt>
-                  <dd className="text-lg font-semibold text-gray-900">
+                  <dd className="text-lg font-semibold text-foreground">
                     {loading ? 'Loading...' : stats?.rejected || 0}
                   </dd>
                 </dl>
@@ -212,10 +212,10 @@ export default function Home() {
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">
+                  <dt className="text-sm font-medium text-muted-foreground truncate">
                     Failed
                   </dt>
-                  <dd className="text-lg font-semibold text-gray-900">
+                  <dd className="text-lg font-semibold text-foreground">
                     {loading ? 'Loading...' : stats?.failed || 0}
                   </dd>
                 </dl>
@@ -228,15 +228,15 @@ export default function Home() {
       {/* Quick Actions */}
       <Card>
         <CardHeader>
-          <h2 className="text-lg font-semibold text-gray-900">Quick Actions</h2>
+          <h2 className="text-lg font-semibold text-foreground">Quick Actions</h2>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center justify-between p-4 border border-gray-200 rounded-md">
+          <div className="flex items-center justify-between p-4 border border-border rounded-md">
             <div>
-              <h3 className="text-sm font-medium text-gray-900">
+              <h3 className="text-sm font-medium text-foreground">
                 Create Trading Intent
               </h3>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-muted-foreground">
                 Submit a new intent for policy validation and execution
               </p>
             </div>
@@ -245,10 +245,10 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="flex items-center justify-between p-4 border border-gray-200 rounded-md">
+          <div className="flex items-center justify-between p-4 border border-border rounded-md">
             <div>
-              <h3 className="text-sm font-medium text-gray-900">View All Intents</h3>
-              <p className="text-sm text-gray-500">
+              <h3 className="text-sm font-medium text-foreground">View All Intents</h3>
+              <p className="text-sm text-muted-foreground">
                 Browse and manage your trading intents
               </p>
             </div>
@@ -257,12 +257,12 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="flex items-center justify-between p-4 border border-gray-200 rounded-md">
+          <div className="flex items-center justify-between p-4 border border-border rounded-md">
             <div>
-              <h3 className="text-sm font-medium text-gray-900">
+              <h3 className="text-sm font-medium text-foreground">
                 Manage Policies
               </h3>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-muted-foreground">
                 Configure compliance policies and rules
               </p>
             </div>
@@ -276,12 +276,12 @@ export default function Home() {
       {/* Info Section */}
       <Card>
         <CardHeader>
-          <h2 className="text-lg font-semibold text-gray-900">
+          <h2 className="text-lg font-semibold text-foreground">
             About ZKX OMA POC
           </h2>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-muted-foreground">
             This proof-of-concept demonstrates an end-to-end workflow for trade intent
             management with embedded policy enforcement and blockchain execution. The
             system validates trading intents against compliance policies before executing

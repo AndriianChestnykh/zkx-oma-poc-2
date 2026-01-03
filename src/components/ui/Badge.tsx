@@ -18,11 +18,11 @@ export function Badge({
       className={clsx(
         'inline-flex items-center font-medium rounded-full',
         {
-          'bg-gray-100 text-gray-800': variant === 'default',
-          'bg-green-100 text-green-800': variant === 'success',
-          'bg-yellow-100 text-yellow-800': variant === 'warning',
-          'bg-red-100 text-red-800': variant === 'error',
-          'bg-blue-100 text-blue-800': variant === 'info',
+          'bg-muted text-foreground': variant === 'default',
+          'bg-success/10 text-success border border-success/20': variant === 'success',
+          'bg-warning/10 text-warning border border-warning/20': variant === 'warning',
+          'bg-danger/10 text-danger border border-danger/20': variant === 'error',
+          'bg-info/10 text-info border border-info/20': variant === 'info',
         },
         {
           'px-2 py-0.5 text-xs': size === 'sm',

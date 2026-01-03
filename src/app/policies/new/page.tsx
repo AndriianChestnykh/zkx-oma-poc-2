@@ -25,7 +25,7 @@ export default function NewPolicyPage() {
           </svg>
           Back to Policies
         </Link>
-        <h1 className="text-3xl font-bold text-gray-900">Create Policy</h1>
+        <h1 className="text-3xl font-bold text-foreground">Create Policy</h1>
         <p className="mt-2 text-sm text-gray-600">
           Define a new compliance policy or trading rule
         </p>

@@ -8,8 +8,8 @@ export default function IntentsPage() {
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Intents</h1>
-          <p className="mt-2 text-sm text-gray-600">
+          <h1 className="text-3xl font-bold text-foreground">Intents</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
             View and manage your trading intents
           </p>
         </div>
@@ -22,11 +22,11 @@ export default function IntentsPage() {
       <IntentList />
 
       {/* Info */}
-      <div className="rounded-md bg-blue-50 p-4">
+      <div className="rounded-md bg-info/10 border border-info/20 p-4">
         <div className="flex">
           <div className="flex-shrink-0">
             <svg
-              className="h-5 w-5 text-blue-400"
+              className="h-5 w-5 text-info"
               viewBox="0 0 20 20"
               fill="currentColor"
               aria-hidden="true"
@@ -39,10 +39,10 @@ export default function IntentsPage() {
             </svg>
           </div>
           <div className="ml-3">
-            <h3 className="text-sm font-medium text-blue-800">
+            <h3 className="text-sm font-medium text-info">
               Intent Lifecycle
             </h3>
-            <div className="mt-2 text-sm text-blue-700">
+            <div className="mt-2 text-sm text-info">
               <p>
                 Intents progress through states: Created → Validated → Executed. Each
                 intent is evaluated against active policies before execution.

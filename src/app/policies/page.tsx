@@ -9,8 +9,8 @@ export default function PoliciesPage() {
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Policies</h1>
-          <p className="mt-2 text-sm text-gray-600">
+          <h1 className="text-3xl font-bold text-foreground">Policies</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
             Configure compliance policies and trading rules
           </p>
         </div>
@@ -23,11 +23,11 @@ export default function PoliciesPage() {
       <PolicyList />
 
       {/* Info */}
-      <div className="rounded-md bg-purple-50 p-4">
+      <div className="rounded-md bg-info/10 border border-info/20 p-4">
         <div className="flex">
           <div className="flex-shrink-0">
             <svg
-              className="h-5 w-5 text-purple-400"
+              className="h-5 w-5 text-info"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -39,10 +39,10 @@ export default function PoliciesPage() {
             </svg>
           </div>
           <div className="ml-3">
-            <h3 className="text-sm font-medium text-purple-800">
+            <h3 className="text-sm font-medium text-info">
               Policy Information
             </h3>
-            <div className="mt-2 text-sm text-purple-700">
+            <div className="mt-2 text-sm text-info">
               <p>
                 Policies are evaluated in priority order (lower = first). All enabled
                 policies must pass for an intent to be validated.

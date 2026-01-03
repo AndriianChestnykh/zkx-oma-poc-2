@@ -14,9 +14,9 @@ export function Card({
   return (
     <div
       className={clsx(
-        'rounded-lg bg-white',
+        'rounded-lg bg-surface',
         {
-          'border border-gray-200': variant === 'default' || variant === 'bordered',
+          'border border-border': variant === 'default' || variant === 'bordered',
           'shadow-md': variant === 'elevated',
         },
         className
@@ -34,7 +34,7 @@ export function CardHeader({
   ...props
 }: HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={clsx('px-6 py-4 border-b border-gray-200', className)} {...props}>
+    <div className={clsx('px-6 py-4 border-b border-border', className)} {...props}>
       {children}
     </div>
   );
@@ -59,7 +59,7 @@ export function CardFooter({
 }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={clsx('px-6 py-4 border-t border-gray-200 bg-gray-50', className)}
+      className={clsx('px-6 py-4 border-t border-border bg-muted', className)}
       {...props}
     >
       {children}

@@ -46,7 +46,7 @@ export function BlockchainEventCard({
                 {eventName}
               </Badge>
               {blockNumber && (
-                <span className="text-xs text-gray-500">
+                <span className="text-xs text-muted-foreground">
                   Block {blockNumber}
                   {logIndex !== undefined && ` (Log ${logIndex})`}
                 </span>
@@ -57,8 +57,8 @@ export function BlockchainEventCard({
               <div className="space-y-1">
                 {Object.entries(args).map(([key, value]) => (
                   <div key={key} className="text-sm">
-                    <span className="font-medium text-gray-700">{key}:</span>{' '}
-                    <span className="text-gray-900 font-mono text-xs break-all">
+                    <span className="font-medium text-muted-foreground">{key}:</span>{' '}
+                    <span className="text-foreground font-mono text-xs break-all">
                       {formatValue(value)}
                     </span>
                   </div>

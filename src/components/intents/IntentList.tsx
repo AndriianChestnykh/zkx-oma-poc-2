@@ -57,10 +57,10 @@ export function IntentList({ initialIntents = [] }: IntentListProps) {
   if (error) {
     return (
       <div className="text-center py-12">
-        <p className="text-red-600">{error}</p>
+        <p className="text-danger">{error}</p>
         <button
           onClick={() => fetchIntents(statusFilter)}
-          className="mt-4 text-blue-600 hover:text-blue-800"
+          className="mt-4 text-primary hover:opacity-80"
         >
           Try again
         </button>
@@ -71,7 +71,7 @@ export function IntentList({ initialIntents = [] }: IntentListProps) {
   if (loading && intents.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-600">Loading intents...</p>
+        <p className="text-muted-foreground">Loading intents...</p>
       </div>
     );
   }
@@ -80,7 +80,7 @@ export function IntentList({ initialIntents = [] }: IntentListProps) {
     <div className="space-y-6">
       {/* Filters */}
       <div className="flex items-center gap-4">
-        <label htmlFor="status-filter" className="text-sm font-medium text-gray-700">
+        <label htmlFor="status-filter" className="text-sm font-medium text-foreground">
           Filter by status:
         </label>
         <Select
@@ -102,8 +102,8 @@ export function IntentList({ initialIntents = [] }: IntentListProps) {
       {/* Intent List */}
       {intents.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-gray-600">No intents found</p>
-          <p className="text-sm text-gray-500 mt-2">
+          <p className="text-foreground">No intents found</p>
+          <p className="text-sm text-muted-foreground mt-2">
             Create your first intent to get started
           </p>
         </div>

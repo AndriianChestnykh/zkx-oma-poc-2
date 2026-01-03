@@ -120,7 +120,7 @@ export function PolicyForm() {
       {/* Basic Information */}
       <Card>
         <CardHeader>
-          <h3 className="text-lg font-semibold text-gray-900">Basic Information</h3>
+          <h3 className="text-lg font-semibold text-foreground">Basic Information</h3>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -185,7 +185,7 @@ export function PolicyForm() {
                   min={0}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
-                <p className="text-xs text-gray-500 mt-1">Lower values are evaluated first</p>
+                <p className="text-xs text-muted-foreground mt-1">Lower values are evaluated first</p>
               </div>
             </div>
 
@@ -208,7 +208,7 @@ export function PolicyForm() {
       {/* Policy Configuration */}
       <Card>
         <CardHeader>
-          <h3 className="text-lg font-semibold text-gray-900">Policy Configuration</h3>
+          <h3 className="text-lg font-semibold text-foreground">Policy Configuration</h3>
         </CardHeader>
         <CardContent>
           {/* Allow/Deny List Config */}
@@ -300,7 +300,7 @@ export function PolicyForm() {
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono"
                   placeholder="0x1234567890123456789012345678901234567890"
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   Leave empty to apply to all assets
                 </p>
               </div>

@@ -18,10 +18,10 @@ export function IntentCard({ intent }: IntentCardProps) {
         <CardHeader>
           <div className="flex items-start justify-between">
             <div>
-              <h3 className="text-lg font-semibold text-gray-900">
+              <h3 className="text-lg font-semibold text-foreground">
                 Intent #{intent.id.slice(0, 8)}
               </h3>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-muted-foreground">
                 {formatAddress(intent.user_address)}
               </p>
             </div>
@@ -31,24 +31,24 @@ export function IntentCard({ intent }: IntentCardProps) {
         <CardContent>
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Swap:</span>
-              <span className="font-medium">
+              <span className="text-muted-foreground">Swap:</span>
+              <span className="font-medium text-foreground">
                 {formatWeiToEth(intent.amount_in)} {intent.asset_in.slice(0, 6)}...
               </span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600">For (min):</span>
-              <span className="font-medium">
+              <span className="text-muted-foreground">For (min):</span>
+              <span className="font-medium text-foreground">
                 {formatWeiToEth(intent.amount_out_min)} {intent.asset_out.slice(0, 6)}...
               </span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Venue:</span>
-              <span className="font-medium">{intent.venue}</span>
+              <span className="text-muted-foreground">Venue:</span>
+              <span className="font-medium text-foreground">{intent.venue}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Created:</span>
-              <span className="text-gray-500">
+              <span className="text-muted-foreground">Created:</span>
+              <span className="text-muted-foreground">
                 {formatRelativeTime(intent.created_at)}
               </span>
             </div>

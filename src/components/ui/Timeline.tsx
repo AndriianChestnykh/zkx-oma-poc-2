@@ -19,7 +19,7 @@ export function TimelineItem({ children, isLast }: TimelineItemProps) {
     <div className={clsx('relative pb-8', !isLast && 'mb-4')}>
       {!isLast && (
         <span
-          className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200"
+          className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-border"
           aria-hidden="true"
         />
       )}
@@ -38,13 +38,13 @@ export function TimelineIcon({ children, variant = 'default' }: TimelineIconProp
     <div className="relative flex items-start">
       <span
         className={clsx(
-          'flex h-8 w-8 items-center justify-center rounded-full ring-8 ring-white',
+          'flex h-8 w-8 items-center justify-center rounded-full ring-8 ring-surface',
           {
-            'bg-gray-400': variant === 'default',
-            'bg-green-500': variant === 'success',
-            'bg-red-500': variant === 'error',
-            'bg-blue-500': variant === 'info',
-            'bg-yellow-500': variant === 'warning',
+            'bg-muted-foreground': variant === 'default',
+            'bg-success': variant === 'success',
+            'bg-danger': variant === 'error',
+            'bg-info': variant === 'info',
+            'bg-warning': variant === 'warning',
           }
         )}
       >
@@ -68,7 +68,7 @@ interface TimelineHeadingProps {
 }
 
 export function TimelineHeading({ children }: TimelineHeadingProps) {
-  return <h3 className="text-sm font-semibold text-gray-900">{children}</h3>;
+  return <h3 className="text-sm font-semibold text-foreground">{children}</h3>;
 }
 
 interface TimelineDescriptionProps {
@@ -76,7 +76,7 @@ interface TimelineDescriptionProps {
 }
 
 export function TimelineDescription({ children }: TimelineDescriptionProps) {
-  return <p className="mt-1 text-sm text-gray-600">{children}</p>;
+  return <p className="mt-1 text-sm text-muted-foreground">{children}</p>;
 }
 
 interface TimelineTimeProps {
@@ -84,5 +84,5 @@ interface TimelineTimeProps {
 }
 
 export function TimelineTime({ children }: TimelineTimeProps) {
-  return <time className="text-xs text-gray-500">{children}</time>;
+  return <time className="text-xs text-muted-foreground">{children}</time>;
 }

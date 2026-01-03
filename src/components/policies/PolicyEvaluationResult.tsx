@@ -15,7 +15,7 @@ export function PolicyEvaluationResult({ result }: PolicyEvaluationResultProps) 
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-gray-900">Validation Result</h3>
+            <h3 className="text-lg font-semibold text-foreground">Validation Result</h3>
             <Badge variant={result.passed ? 'success' : 'error'} size="lg">
               {result.passed ? 'PASSED' : 'FAILED'}
             </Badge>
@@ -24,23 +24,23 @@ export function PolicyEvaluationResult({ result }: PolicyEvaluationResultProps) 
         <CardContent>
           <div className="grid grid-cols-3 gap-4 text-sm">
             <div>
-              <p className="text-gray-500">Total Policies</p>
-              <p className="text-xl font-semibold text-gray-900">{result.evaluations.length}</p>
+              <p className="text-muted-foreground">Total Policies</p>
+              <p className="text-xl font-semibold text-foreground">{result.evaluations.length}</p>
             </div>
             <div>
-              <p className="text-gray-500">Passed</p>
+              <p className="text-muted-foreground">Passed</p>
               <p className="text-xl font-semibold text-green-600">
                 {result.passedPolicies.length}
               </p>
             </div>
             <div>
-              <p className="text-gray-500">Failed</p>
+              <p className="text-muted-foreground">Failed</p>
               <p className="text-xl font-semibold text-red-600">
                 {result.failedPolicies.length}
               </p>
             </div>
           </div>
-          <div className="mt-4 text-xs text-gray-500">
+          <div className="mt-4 text-xs text-muted-foreground">
             Evaluated at: {result.evaluatedAt.toLocaleString()}
           </div>
         </CardContent>
@@ -53,7 +53,7 @@ export function PolicyEvaluationResult({ result }: PolicyEvaluationResultProps) 
         {result.evaluations.length === 0 ? (
           <Card>
             <CardContent>
-              <p className="text-sm text-gray-500 text-center py-4">
+              <p className="text-sm text-muted-foreground text-center py-4">
                 No policies were evaluated
               </p>
             </CardContent>
@@ -72,7 +72,7 @@ export function PolicyEvaluationResult({ result }: PolicyEvaluationResultProps) 
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <h5 className="font-medium text-gray-900">{evaluation.policyName}</h5>
+                      <h5 className="font-medium text-foreground">{evaluation.policyName}</h5>
                       <Badge variant={evaluation.passed ? 'success' : 'error'}>
                         {evaluation.passed ? 'Passed' : 'Failed'}
                       </Badge>
