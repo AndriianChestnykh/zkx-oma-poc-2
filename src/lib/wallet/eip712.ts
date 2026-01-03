@@ -6,11 +6,13 @@ import { Hex } from 'viem';
 import { CONTRACT_ADDRESSES } from '../blockchain/contracts';
 import type { Intent } from '@/types/intent';
 
+const CHAIN_ID = parseInt(process.env.CHAIN_ID as string) || 31337;
+
 // EIP-712 domain for OMAAccount
 export const EIP712_DOMAIN = {
   name: 'OMAAccount',
   version: '1',
-  chainId: 31337, // Anvil chain ID
+  chainId: CHAIN_ID,
   verifyingContract: CONTRACT_ADDRESSES.OMAAccount as Hex,
 } as const;
 

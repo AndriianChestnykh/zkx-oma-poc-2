@@ -8,6 +8,7 @@ import { privateKeyToAccount } from 'viem/accounts';
 
 // Anvil configuration
 const RPC_URL = process.env.RPC_URL || 'http://localhost:8545';
+const CHAIN_ID = parseInt(process.env.CHAIN_ID as string) || 31337;
 
 // Anvil default account[0] private key
 // Address: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
@@ -15,9 +16,8 @@ const PRIVATE_KEY =
   process.env.PRIVATE_KEY ||
   '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80';
 
-// Define Anvil chain with correct chain ID (31337)
-const anvilChain = defineChain({
-  id: 31337,
+const chain = defineChain({
+  id: CHAIN_ID,
   name: 'Anvil',
   nativeCurrency: {
     decimals: 18,
@@ -36,7 +36,7 @@ const anvilChain = defineChain({
  * Use for: calling view functions, getting events, reading state
  */
 export const publicClient = createPublicClient({
-  chain: anvilChain,
+  chain: chain,
   transport: http(RPC_URL),
 });
 
@@ -49,7 +49,7 @@ export function getWalletClient() {
 
   return createWalletClient({
     account,
-    chain: anvilChain,
+    chain: chain,
     transport: http(RPC_URL),
   });
 }
