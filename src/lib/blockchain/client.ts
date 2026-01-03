@@ -11,8 +11,8 @@ const RPC_URL = process.env.RPC_URL || 'http://localhost:8545';
 
 // Anvil default account[0] private key
 // Address: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
-const ANVIL_PRIVATE_KEY =
-  process.env.ANVIL_PRIVATE_KEY ||
+const PRIVATE_KEY =
+  process.env.PRIVATE_KEY ||
   '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80';
 
 // Define Anvil chain with correct chain ID (31337)
@@ -45,7 +45,7 @@ export const publicClient = createPublicClient({
  * Use for: sending transactions, signing messages
  */
 export function getWalletClient() {
-  const account = privateKeyToAccount(ANVIL_PRIVATE_KEY as `0x${string}`);
+  const account = privateKeyToAccount(PRIVATE_KEY as `0x${string}`);
 
   return createWalletClient({
     account,
@@ -58,7 +58,7 @@ export function getWalletClient() {
  * Get the default account address
  */
 export function getDefaultAccount() {
-  const account = privateKeyToAccount(ANVIL_PRIVATE_KEY as `0x${string}`);
+  const account = privateKeyToAccount(PRIVATE_KEY as `0x${string}`);
   return account.address;
 }
 

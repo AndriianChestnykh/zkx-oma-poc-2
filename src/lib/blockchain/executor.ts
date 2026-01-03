@@ -6,7 +6,7 @@ import { Intent } from '@/types/intent';
 import { Hex, decodeEventLog } from 'viem';
 import { getWalletClient, publicClient } from './client';
 import { getContractConfig } from './contracts';
-import { signIntent, intentToContractFormat, ANVIL_DEFAULT_PRIVATE_KEY } from '../security/authorization';
+import { signIntent, intentToContractFormat, DEFAULT_PRIVATE_KEY } from '../security/authorization';
 
 export interface ExecutionResult {
   success: boolean;
@@ -26,7 +26,7 @@ export interface ExecutionResult {
  */
 export async function executeIntentOnChain(
   intent: Intent,
-  privateKey: Hex = ANVIL_DEFAULT_PRIVATE_KEY
+  privateKey: Hex = DEFAULT_PRIVATE_KEY
 ): Promise<ExecutionResult> {
   try {
     // 1. Convert intent to contract format
