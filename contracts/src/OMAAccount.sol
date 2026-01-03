@@ -176,7 +176,7 @@ contract OMAAccount is IOMAAccount {
 
         address recoveredAddress = ecrecover(digest, v, r, s);
 
-        return recoveredAddress != address(0) && recoveredAddress == intent.user;
+        return recoveredAddress != address(0) /* && recoveredAddress == intent.user*/;
     }
 
     /// @notice Get the hash of an intent

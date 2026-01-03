@@ -6,7 +6,7 @@
 import { useState, useEffect, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAccount, useSignTypedData } from 'wagmi';
-import { parseEther, formatEther, Hex } from 'viem';
+import { parseEther, Hex } from 'viem';
 import { Input } from '@/components/ui/Input';
 import { Select } from '@/components/ui/Select';
 import { Button } from '@/components/ui/Button';

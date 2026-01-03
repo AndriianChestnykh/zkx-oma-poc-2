@@ -219,7 +219,8 @@ export async function getNextNonce(userAddress: string): Promise<number> {
 
   try {
     const result = await query<{ next_nonce: number }>(sql, [userAddress]);
-    return result.rows[0]?.next_nonce || 0;
+    //TODO figure out why type casting is needed here. next_nonce should be number
+    return parseInt(result.rows[0]?.next_nonce as unknown as string || "0");
   } catch (error) {
     throw new DatabaseError('Failed to get next nonce', error as Error);
   }
