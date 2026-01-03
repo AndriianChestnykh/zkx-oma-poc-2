@@ -41,7 +41,7 @@ export async function evaluateAllowDenyList(
   let passed: boolean;
   let reason: string;
 
-  if (config.mode === 'allow' || config.mode === 'allowlist') {
+  if (config.mode === 'allow') {
     // In allow mode, at least one address must be in the list
     // (or you could require ALL addresses to be in the list - adjust as needed)
     passed = foundAddresses.length > 0;

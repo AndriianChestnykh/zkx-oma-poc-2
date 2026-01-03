@@ -60,9 +60,23 @@ This is a POC focused on enforceability and traceability rather than full venue 
 
 ### Data Flow
 
-**1. Intent Creation**
+**1. Intent Creation (Client-Side Signing)**
 ```
-User Form → API POST /api/intents → Validation → DB INSERT → Return Intent ID
+User Connects Wallet (MetaMask)
+  ↓
+Auto-fill User Address + Fetch Nonce (GET /api/intents/nonce?address=0x...)
+  ↓
+User Fills Form (Token Dropdowns, ETH Amounts)
+  ↓
+User Clicks "Create & Sign Intent"
+  ↓
+Wallet Popup → User Approves EIP-712 Signature
+  ↓
+API POST /api/intents (with signature)
+  ↓
+Validation (Zod Schema) → DB INSERT → Return Intent ID
+  ↓
+Nonce Refetched for Next Intent
 ```
 
 **2. Policy Validation**
@@ -94,6 +108,9 @@ API POST /api/intents/:id/execute
 - **TypeScript** - Strict mode enabled for type safety
 - **TailwindCSS** - Utility-first CSS framework
 - **React Components** - Functional components with hooks
+- **Wagmi** - React hooks for Ethereum (wallet connection, signing)
+- **RainbowKit** - Wallet connection UI library
+- **@tanstack/react-query** - Data fetching and caching (required by Wagmi)
 
 ### Backend
 - **Next.js API Routes** - Serverless API endpoints

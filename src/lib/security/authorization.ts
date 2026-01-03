@@ -1,49 +1,14 @@
 /**
  * Authorization and signature utilities
- * Handles EIP-712 signature generation for intents
+ * Handles EIP-712 signature generation for intents (server-side)
  */
 import { Intent } from '@/types/intent';
 import { privateKeyToAccount } from 'viem/accounts';
 import { Hex, hashTypedData } from 'viem';
-import { CONTRACT_ADDRESSES } from '../blockchain/contracts';
+import { EIP712_DOMAIN, INTENT_TYPES, intentToContractFormat } from '../wallet/eip712';
 
-// EIP-712 domain for OMAAccount
-const EIP712_DOMAIN = {
-  name: 'OMAAccount',
-  version: '1',
-  chainId: 31337, // Anvil chain ID
-  verifyingContract: CONTRACT_ADDRESSES.OMAAccount,
-} as const;
-
-// EIP-712 types for Intent
-const INTENT_TYPES = {
-  Intent: [
-    { name: 'user', type: 'address' },
-    { name: 'assetIn', type: 'address' },
-    { name: 'assetOut', type: 'address' },
-    { name: 'amountIn', type: 'uint256' },
-    { name: 'amountOutMin', type: 'uint256' },
-    { name: 'venue', type: 'string' },
-    { name: 'deadline', type: 'uint256' },
-    { name: 'nonce', type: 'uint256' },
-  ],
-} as const;
-
-/**
- * Convert Intent from database format to contract format
- */
-export function intentToContractFormat(intent: Intent) {
-  return {
-    user: intent.user_address as Hex,
-    assetIn: intent.asset_in as Hex,
-    assetOut: intent.asset_out as Hex,
-    amountIn: BigInt(intent.amount_in),
-    amountOutMin: BigInt(intent.amount_out_min),
-    venue: intent.venue,
-    deadline: BigInt(intent.deadline),
-    nonce: BigInt(intent.nonce),
-  };
-}
+// Re-export for backward compatibility
+export { EIP712_DOMAIN, INTENT_TYPES, intentToContractFormat };
 
 /**
  * Sign an intent using EIP-712

@@ -19,8 +19,8 @@ export async function createIntent(data: IntentInput): Promise<Intent> {
   const sql = `
     INSERT INTO intents (
       user_address, asset_in, asset_out, amount_in, amount_out_min,
-      venue, deadline, nonce, status
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+      venue, deadline, nonce, status, signature
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
     RETURNING *
   `;
 
@@ -34,6 +34,7 @@ export async function createIntent(data: IntentInput): Promise<Intent> {
     data.deadline,
     data.nonce,
     data.status || 'created',
+    data.signature || null,
   ];
 
   try {
@@ -202,6 +203,25 @@ export async function checkNonceUsed(
     return result.rows[0]?.exists || false;
   } catch (error) {
     throw new DatabaseError('Failed to check nonce', error as Error);
+  }
+}
+
+/**
+ * Get next available nonce for a user
+ * Returns max nonce + 1, or 0 if user has no intents
+ */
+export async function getNextNonce(userAddress: string): Promise<number> {
+  const sql = `
+    SELECT COALESCE(MAX(nonce), -1) + 1 as next_nonce
+    FROM intents
+    WHERE user_address = $1
+  `;
+
+  try {
+    const result = await query<{ next_nonce: number }>(sql, [userAddress]);
+    return result.rows[0]?.next_nonce || 0;
+  } catch (error) {
+    throw new DatabaseError('Failed to get next nonce', error as Error);
   }
 }
 

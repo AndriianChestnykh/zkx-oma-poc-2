@@ -50,6 +50,10 @@ export const createIntentSchema = z.object({
   deadline: futureTimestampSchema,
   nonce: nonceSchema,
   status: intentStatusSchema.optional(),
+  signature: z
+    .string()
+    .regex(/^0x[a-fA-F0-9]+$/, 'Signature must be a hex string starting with 0x')
+    .optional(),
 });
 
 /**
