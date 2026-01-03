@@ -422,6 +422,376 @@ export function IntentCard({ intent }: { intent: Intent }) {
 
 ---
 
+## Wallet Integration
+
+### Overview
+
+The application uses **client-side signing** for intent creation. Users connect their MetaMask (or other injected wallet) to sign intents using EIP-712 typed data signatures. This ensures users maintain full control of their private keys while providing cryptographic proof of intent authorship.
+
+**Key Components:**
+- **Wagmi** - React hooks for wallet connection and signing
+- **RainbowKit** - Pre-built wallet connection UI
+- **viem** - Ethereum library for type-safe contract interactions
+
+### Wallet Connection Flow
+
+```typescript
+// 1. Wrap app with WalletProvider (in layout.tsx)
+import { WalletProvider } from '@/components/wallet/WalletProvider';
+
+export default function RootLayout({ children }) {
+  return (
+    <WalletProvider>
+      {children}
+    </WalletProvider>
+  );
+}
+
+// 2. Add WalletButton to UI
+import { WalletButton } from '@/components/wallet/WalletButton';
+
+<WalletButton /> // Renders RainbowKit's ConnectButton
+```
+
+### Client-Side Intent Signing
+
+**Pattern:**
+```typescript
+import { useAccount, useSignTypedData } from 'wagmi';
+import { EIP712_DOMAIN, INTENT_TYPES, formDataToTypedMessage } from '@/lib/wallet/eip712';
+
+function IntentForm() {
+  const { address, isConnected } = useAccount();
+  const { signTypedDataAsync } = useSignTypedData();
+
+  const handleSubmit = async (formData) => {
+    // 1. Fetch nonce from API
+    const nonceRes = await fetch(`/api/intents/nonce?address=${address}`);
+    const { nonce } = await nonceRes.json();
+
+    // 2. Prepare typed data message
+    const message = formDataToTypedMessage(formData, address, nonce);
+
+    // 3. Request signature from wallet
+    const signature = await signTypedDataAsync({
+      domain: EIP712_DOMAIN,
+      types: INTENT_TYPES,
+      primaryType: 'Intent',
+      message,
+    });
+
+    // 4. Submit intent with signature
+    const response = await fetch('/api/intents', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...formData,
+        user_address: address,
+        nonce,
+        signature,
+      }),
+    });
+  };
+}
+```
+
+### EIP-712 Type Definitions
+
+**Shared types for client and server** (defined in `src/lib/wallet/eip712.ts`):
+
+```typescript
+export const EIP712_DOMAIN = {
+  name: 'OMAAccount',
+  version: '1',
+  chainId: 31337, // Foundry/Anvil local chain
+  verifyingContract: CONTRACT_ADDRESSES.OMAAccount as Hex,
+} as const;
+
+export const INTENT_TYPES = {
+  Intent: [
+    { name: 'user', type: 'address' },
+    { name: 'assetIn', type: 'address' },
+    { name: 'assetOut', type: 'address' },
+    { name: 'amountIn', type: 'uint256' },
+    { name: 'amountOutMin', type: 'uint256' },
+    { name: 'venue', type: 'string' },
+    { name: 'deadline', type: 'uint256' },
+    { name: 'nonce', type: 'uint256' },
+  ],
+} as const;
+```
+
+### Nonce Management
+
+**API Endpoint:** `GET /api/intents/nonce?address=0x...`
+
+**Purpose:** Fetch the next available nonce for a user address to prevent replay attacks.
+
+**Implementation:**
+```typescript
+// src/lib/db/intents.ts
+export async function getNextNonce(userAddress: string): Promise<number> {
+  const sql = `
+    SELECT COALESCE(MAX(nonce), -1) + 1 as next_nonce
+    FROM intents
+    WHERE user_address = $1
+  `;
+
+  const result = await query<{ next_nonce: number }>(sql, [userAddress]);
+  return result.rows[0]?.next_nonce || 0;
+}
+```
+
+**Usage Pattern:**
+```typescript
+// Fetch nonce when wallet connects
+useEffect(() => {
+  if (address) {
+    fetchNonce(); // Load current nonce
+  }
+}, [address]);
+
+// Refetch after successful submission
+const handleSubmit = async () => {
+  // ... submit intent
+  await fetchNonce(); // Get next nonce for subsequent intents
+};
+```
+
+**Critical:** Always refetch nonce after successful intent creation to prevent race conditions when creating multiple intents in quick succession.
+
+### Token Configuration
+
+**Hardcoded token list** (in `src/components/intents/IntentForm.tsx`):
+
+```typescript
+const TOKENS = [
+  {
+    symbol: 'USDT',
+    name: 'Tether USD',
+    address: '0x94373a4919B3240D86eA41593D5eBa789FEF3848',
+  },
+  {
+    symbol: 'WBTC',
+    name: 'Wrapped Bitcoin',
+    address: '0x1613beB3B2C4f22Ee086B2b38C1476A3cE7f78E8',
+  },
+  {
+    symbol: 'WETH',
+    name: 'Wrapped Ether',
+    address: '0xD31a59c85aE9D8edEFeC411D448f90841571b89c',
+  },
+] as const;
+```
+
+**Token dropdown component:**
+```typescript
+<select
+  value={formData.asset_in}
+  onChange={(e) => setFormData({ ...formData, asset_in: e.target.value })}
+>
+  <option value="">Select token</option>
+  {TOKENS.map((token) => (
+    <option key={token.address} value={token.address}>
+      {token.symbol} - {token.name}
+    </option>
+  ))}
+</select>
+```
+
+### Amount Input (ETH ↔ Wei Conversion)
+
+**Use viem utilities for conversion:**
+
+```typescript
+import { parseEther, formatEther } from 'viem';
+
+// User input in ETH (human-readable)
+const [amountInEth, setAmountInEth] = useState('');
+
+// Convert to wei for blockchain
+const handleSubmit = () => {
+  const amountInWei = parseEther(amountInEth); // "1.5" → "1500000000000000000"
+
+  // Submit wei value to API
+  await createIntent({ amount_in: amountInWei.toString() });
+};
+
+// Display wei as ETH
+const displayAmount = formatEther(BigInt(intent.amount_in)); // "1500000000000000000" → "1.5"
+```
+
+**Form input pattern:**
+```typescript
+<input
+  type="number"
+  step="0.000000000000000001"
+  min="0"
+  placeholder="Amount in ETH"
+  value={amountInEth}
+  onChange={(e) => setAmountInEth(e.target.value)}
+/>
+```
+
+### Common Wagmi Hooks
+
+**useAccount** - Get connected wallet info
+```typescript
+const { address, isConnected, isConnecting } = useAccount();
+
+// Auto-fill user address in form
+useEffect(() => {
+  if (address) {
+    setFormData({ ...formData, user_address: address });
+  }
+}, [address]);
+```
+
+**useSignTypedData** - Request EIP-712 signature
+```typescript
+const { signTypedDataAsync, isPending, error } = useSignTypedData();
+
+const signature = await signTypedDataAsync({
+  domain: EIP712_DOMAIN,
+  types: INTENT_TYPES,
+  primaryType: 'Intent',
+  message: intentMessage,
+});
+```
+
+**useWaitForTransactionReceipt** - Wait for transaction confirmation
+```typescript
+import { useWaitForTransactionReceipt } from 'wagmi';
+
+const { data: receipt, isLoading } = useWaitForTransactionReceipt({
+  hash: txHash,
+});
+```
+
+### Error Handling
+
+**Wallet Connection Errors:**
+```typescript
+if (!isConnected) {
+  return (
+    <div className="text-center py-8">
+      <p className="text-gray-600 mb-4">Please connect your wallet to create intents</p>
+      <WalletButton />
+    </div>
+  );
+}
+```
+
+**Signature Rejection:**
+```typescript
+try {
+  const signature = await signTypedDataAsync({ ... });
+} catch (error: any) {
+  if (error.message.includes('User rejected')) {
+    setError('Signature rejected. Please approve in your wallet to continue.');
+  } else {
+    setError('Failed to sign intent: ' + error.message);
+  }
+}
+```
+
+**Nonce Fetch Failures:**
+```typescript
+const fetchNonce = async () => {
+  try {
+    const res = await fetch(`/api/intents/nonce?address=${address}`);
+    const data = await res.json();
+
+    if (!data.success) {
+      throw new Error(data.error || 'Failed to fetch nonce');
+    }
+
+    setNonce(data.nonce);
+  } catch (error: any) {
+    console.error('Failed to fetch nonce:', error);
+    setError('Failed to load nonce. Please refresh the page and try again.');
+    setNonce(null); // Keep as null to block form submission
+  }
+};
+```
+
+**Critical:** Never silently fallback to `nonce=0` on error, as this can cause transaction conflicts for users with existing intents.
+
+### Wagmi Configuration
+
+**Setup for Foundry/Anvil** (`src/lib/wallet/config.ts`):
+
+```typescript
+import { http, createConfig } from 'wagmi';
+import { foundry } from 'wagmi/chains';
+import { QueryClient } from '@tanstack/react-query';
+
+export const wagmiConfig = createConfig({
+  chains: [foundry],
+  transports: {
+    [foundry.id]: http('http://localhost:8545'),
+  },
+});
+
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: false,
+    },
+  },
+});
+```
+
+**Environment Variables:**
+```bash
+NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=<your-project-id> # Optional, for WalletConnect
+ANVIL_RPC_URL=http://localhost:8545
+```
+
+### Testing Wallet Integration
+
+**Mock wallet connection in tests:**
+```typescript
+import { vi } from 'vitest';
+
+vi.mock('wagmi', () => ({
+  useAccount: () => ({
+    address: '0x1234567890123456789012345678901234567890',
+    isConnected: true,
+  }),
+  useSignTypedData: () => ({
+    signTypedDataAsync: vi.fn().mockResolvedValue('0xmocksignature...'),
+    isPending: false,
+  }),
+}));
+```
+
+**Test nonce API endpoint:**
+```typescript
+describe('GET /api/intents/nonce', () => {
+  it('should return next available nonce', async () => {
+    const response = await fetch('/api/intents/nonce?address=0x123...');
+    const data = await response.json();
+
+    expect(data.success).toBe(true);
+    expect(data.nonce).toBe(0); // First nonce for new user
+  });
+
+  it('should return incremented nonce for existing user', async () => {
+    // Create intent with nonce 0
+    await createIntent({ user_address: '0x123...', nonce: 0 });
+
+    const response = await fetch('/api/intents/nonce?address=0x123...');
+    const data = await response.json();
+
+    expect(data.nonce).toBe(1); // Next available nonce
+  });
+});
+```
+
+---
+
 ## Security Guidelines
 
 ### 1. SQL Injection Prevention
