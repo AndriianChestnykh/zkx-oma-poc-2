@@ -8,7 +8,10 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest",
-    "test:watch": "vitest --watch"
+    "test:watch": "vitest --watch",
+    "contracts:compile": "cd contracts && forge build",
+    "contracts:compile:force": "cd contracts && forge build --force",
+    "contracts:deploy": "forge script script/Deploy.s.sol:DeployScript --rpc-url $RPC_URL --private-key $PRIVATE_KEY --broadcast --verify -vvvv"
   },
   "dependencies": {
     "@rainbow-me/rainbowkit": "^2.2.10",
