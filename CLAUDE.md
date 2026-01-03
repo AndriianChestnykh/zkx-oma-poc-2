@@ -1009,7 +1009,7 @@ contract OMAAccountTest is Test {
 ```bash
 # Clone repository
 git clone <repo-url>
-cd zkx-oma-poc-claude
+cd zkx-oma-poc-2
 
 # Copy environment variables
 cp .env.local.example .env.local
