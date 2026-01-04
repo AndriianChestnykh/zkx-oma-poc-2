@@ -8,7 +8,7 @@ export default function NewPolicyPage() {
       <div>
         <Link
           href="/policies"
-          className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1 mb-2"
+          className="text-sm text-primary hover:text-blue-800 flex items-center gap-1 mb-2"
         >
           <svg
             className="h-4 w-4"
@@ -25,8 +25,8 @@ export default function NewPolicyPage() {
           </svg>
           Back to Policies
         </Link>
-        <h1 className="text-3xl font-bold text-gray-900">Create Policy</h1>
-        <p className="mt-2 text-sm text-gray-600">
+        <h1 className="text-3xl font-bold text-text-primary">Create Policy</h1>
+        <p className="mt-2 text-sm text-text-secondary">
           Define a new compliance policy or trading rule
         </p>
       </div>

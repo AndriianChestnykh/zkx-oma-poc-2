@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { WalletProvider } from "@/components/wallet/WalletProvider";
 import { WalletButton } from "@/components/wallet/WalletButton";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -20,41 +21,42 @@ export default function RootLayout({
         <WalletProvider>
           <div className="min-h-screen flex flex-col">
             {/* Navigation Header */}
-            <header className="bg-white border-b border-gray-200">
+            <header className="bg-surface-elevated border-b border-border">
               <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between h-16">
                   <div className="flex">
                     <div className="flex-shrink-0 flex items-center">
-                      <Link href="/" className="text-xl font-bold text-blue-600">
+                      <Link href="/" className="text-xl font-bold text-primary">
                         ZKX OMA
                       </Link>
                     </div>
                     <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                       <Link
                         href="/"
-                        className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                        className="border-transparent text-text-secondary hover:border-border-hover hover:text-text-primary inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors"
                       >
                         Dashboard
                       </Link>
                       <Link
                         href="/intents"
-                        className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                        className="border-transparent text-text-secondary hover:border-border-hover hover:text-text-primary inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors"
                       >
                         Intents
                       </Link>
                       <Link
                         href="/policies"
-                        className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                        className="border-transparent text-text-secondary hover:border-border-hover hover:text-text-primary inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors"
                       >
                         Policies
                       </Link>
                     </div>
                   </div>
                   <div className="flex items-center gap-4">
+                    <ThemeToggle />
                     <WalletButton />
                     <Link
                       href="/intents/new"
-                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-text-on-primary bg-primary hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors"
                     >
                       Create Intent
                     </Link>
@@ -64,16 +66,16 @@ export default function RootLayout({
             </header>
 
             {/* Main Content */}
-            <main className="flex-grow bg-gray-50">
+            <main className="flex-grow bg-surface">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {children}
               </div>
             </main>
 
             {/* Footer */}
-            <footer className="bg-white border-t border-gray-200">
+            <footer className="bg-surface-elevated border-t border-border">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-                <p className="text-center text-sm text-gray-500">
+                <p className="text-center text-sm text-text-tertiary">
                   ZKX OMA Proof of Concept - Trade Intent Management System
                 </p>
               </div>

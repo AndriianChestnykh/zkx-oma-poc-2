@@ -120,7 +120,7 @@ export function PolicyList() {
   if (loading) {
     return (
       <div className="text-center py-8">
-        <p className="text-gray-500">Loading policies...</p>
+        <p className="text-text-tertiary">Loading policies...</p>
       </div>
     );
   }
@@ -141,12 +141,12 @@ export function PolicyList() {
       {/* Filters */}
       <Card>
         <CardHeader>
-          <h3 className="text-sm font-medium text-gray-700">Filters</h3>
+          <h3 className="text-sm font-medium text-text-primary">Filters</h3>
         </CardHeader>
         <CardContent>
           <div className="flex gap-4">
             <div>
-              <label htmlFor="filter-enabled" className="block text-sm text-gray-600 mb-1">
+              <label htmlFor="filter-enabled" className="block text-sm text-text-secondary mb-1">
                 Status
               </label>
               <select
@@ -156,7 +156,7 @@ export function PolicyList() {
                   const value = e.target.value;
                   setFilterEnabled(value === '' ? undefined : value === 'true');
                 }}
-                className="px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                className="px-3 py-2 border border-border rounded-lg text-sm"
               >
                 <option value="">All</option>
                 <option value="true">Enabled</option>
@@ -165,7 +165,7 @@ export function PolicyList() {
             </div>
 
             <div>
-              <label htmlFor="filter-type" className="block text-sm text-gray-600 mb-1">
+              <label htmlFor="filter-type" className="block text-sm text-text-secondary mb-1">
                 Type
               </label>
               <select
@@ -174,7 +174,7 @@ export function PolicyList() {
                 onChange={(e) => {
                   setFilterType(e.target.value ? (e.target.value as PolicyType) : undefined);
                 }}
-                className="px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                className="px-3 py-2 border border-border rounded-lg text-sm"
               >
                 <option value="">All Types</option>
                 <option value="allow_deny_list">Allow/Deny List</option>
@@ -192,7 +192,7 @@ export function PolicyList() {
         <Card>
           <CardContent>
             <div className="text-center py-8">
-              <p className="text-gray-500">No policies found</p>
+              <p className="text-text-tertiary">No policies found</p>
               <Link href="/policies/new">
                 <Button className="mt-4">Create First Policy</Button>
               </Link>
@@ -207,21 +207,21 @@ export function PolicyList() {
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-lg font-semibold text-gray-900">{policy.name}</h3>
+                      <h3 className="text-lg font-semibold text-text-primary">{policy.name}</h3>
                       <Badge variant={getPolicyTypeVariant(policy.policy_type)}>
                         {getPolicyTypeLabel(policy.policy_type)}
                       </Badge>
                       <Badge variant={policy.enabled ? 'success' : 'default'}>
                         {policy.enabled ? 'Enabled' : 'Disabled'}
                       </Badge>
-                      <span className="text-sm text-gray-500">Priority: {policy.priority}</span>
+                      <span className="text-sm text-text-tertiary">Priority: {policy.priority}</span>
                     </div>
 
                     {policy.description && (
-                      <p className="text-sm text-gray-600 mb-2">{policy.description}</p>
+                      <p className="text-sm text-text-secondary mb-2">{policy.description}</p>
                     )}
 
-                    <div className="text-xs text-gray-500">
+                    <div className="text-xs text-text-tertiary">
                       Created: {new Date(policy.created_at).toLocaleString()}
                     </div>
                   </div>

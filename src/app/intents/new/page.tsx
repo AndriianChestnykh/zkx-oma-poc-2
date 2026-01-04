@@ -8,7 +8,7 @@ export default function NewIntentPage() {
       <div>
         <Link
           href="/intents"
-          className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1 mb-2"
+          className="text-sm text-primary hover:text-blue-800 flex items-center gap-1 mb-2"
         >
           <svg
             className="h-4 w-4"
@@ -25,8 +25,8 @@ export default function NewIntentPage() {
           </svg>
           Back to Intents
         </Link>
-        <h1 className="text-3xl font-bold text-gray-900">Create Intent</h1>
-        <p className="mt-2 text-sm text-gray-600">
+        <h1 className="text-3xl font-bold text-text-primary">Create Intent</h1>
+        <p className="mt-2 text-sm text-text-secondary">
           Submit a new trading intent for validation and execution
         </p>
       </div>

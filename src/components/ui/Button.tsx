@@ -21,14 +21,14 @@ export function Button({
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
         'disabled:pointer-events-none disabled:opacity-50',
         {
-          'bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-600':
+          'bg-primary text-text-on-primary hover:bg-primary-hover focus-visible:ring-primary':
             variant === 'primary',
-          'bg-gray-100 text-gray-900 hover:bg-gray-200 focus-visible:ring-gray-500':
+          'bg-surface text-text-primary hover:bg-surface-elevated border border-border focus-visible:ring-primary':
             variant === 'secondary',
-          'border border-gray-300 bg-white hover:bg-gray-50 focus-visible:ring-gray-500':
+          'border border-border bg-surface-elevated hover:bg-surface text-text-primary focus-visible:ring-primary':
             variant === 'outline',
-          'hover:bg-gray-100 focus-visible:ring-gray-500': variant === 'ghost',
-          'bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-600':
+          'hover:bg-surface text-text-primary focus-visible:ring-primary': variant === 'ghost',
+          'bg-accent-red text-text-on-primary hover:bg-accent-red-light focus-visible:ring-accent-red':
             variant === 'danger',
         },
         {

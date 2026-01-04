@@ -274,7 +274,7 @@ export function IntentForm() {
         <CardContent>
           <div className="text-center py-12">
             <svg
-              className="mx-auto h-12 w-12 text-gray-400"
+              className="mx-auto h-12 w-12 text-text-tertiary"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -286,12 +286,12 @@ export function IntentForm() {
                 d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
               />
             </svg>
-            <h3 className="mt-4 text-lg font-medium text-gray-900">Wallet Required</h3>
-            <p className="mt-2 text-sm text-gray-600">
+            <h3 className="mt-4 text-lg font-medium text-text-primary">Wallet Required</h3>
+            <p className="mt-2 text-sm text-text-secondary">
               Connect your wallet to create an intent. Your wallet will be used to sign the intent
               before submission.
             </p>
-            <p className="mt-4 text-xs text-gray-500">
+            <p className="mt-4 text-xs text-text-tertiary">
               Click "Connect Wallet" in the header to get started.
             </p>
           </div>
@@ -303,21 +303,21 @@ export function IntentForm() {
   return (
     <Card variant="bordered">
       <CardHeader>
-        <h2 className="text-2xl font-bold text-gray-900">Create New Intent</h2>
-        <p className="text-sm text-gray-600 mt-1">
+        <h2 className="text-2xl font-bold text-text-primary">Create New Intent</h2>
+        <p className="text-sm text-text-secondary mt-1">
           Fill in the details below to create and sign a trade intent
         </p>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
           {serverError && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+            <div className="bg-status-error/10 border border-status-error text-status-error px-4 py-3 rounded">
               {serverError}
             </div>
           )}
 
           {signing && (
-            <div className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded">
+            <div className="bg-status-info/10 border border-status-info text-status-info px-4 py-3 rounded">
               Please sign the intent in your wallet...
             </div>
           )}

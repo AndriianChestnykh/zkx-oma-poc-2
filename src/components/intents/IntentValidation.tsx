@@ -50,13 +50,13 @@ export function IntentValidation({ intent, onStatusChange }: IntentValidationPro
   return (
     <div className="space-y-4">
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+        <div className="bg-status-error/10 border border-status-error rounded-lg p-4">
           <p className="text-sm text-red-800">{error}</p>
         </div>
       )}
 
       {!canValidate && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div className="bg-status-info/10 border border-status-info rounded-lg p-4">
           <p className="text-sm text-blue-800">
             Intent must be in "created" status to validate. Current status: {intent.status}
           </p>

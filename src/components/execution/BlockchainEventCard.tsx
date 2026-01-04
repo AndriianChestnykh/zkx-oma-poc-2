@@ -34,11 +34,11 @@ export function BlockchainEventCard({
   };
 
   return (
-    <Card className="bg-blue-50 border-blue-200">
+    <Card className="bg-status-info/10 border-status-info">
       <CardContent className="pt-6">
         <div className="flex items-start gap-3">
           <div className="p-2 bg-blue-100 rounded-full">
-            <Activity className="h-4 w-4 text-blue-600" />
+            <Activity className="h-4 w-4 text-primary" />
           </div>
           <div className="flex-1 space-y-2">
             <div className="flex items-center gap-2">
@@ -46,7 +46,7 @@ export function BlockchainEventCard({
                 {eventName}
               </Badge>
               {blockNumber && (
-                <span className="text-xs text-gray-500">
+                <span className="text-xs text-text-tertiary">
                   Block {blockNumber}
                   {logIndex !== undefined && ` (Log ${logIndex})`}
                 </span>
@@ -57,8 +57,8 @@ export function BlockchainEventCard({
               <div className="space-y-1">
                 {Object.entries(args).map(([key, value]) => (
                   <div key={key} className="text-sm">
-                    <span className="font-medium text-gray-700">{key}:</span>{' '}
-                    <span className="text-gray-900 font-mono text-xs break-all">
+                    <span className="font-medium text-text-primary">{key}:</span>{' '}
+                    <span className="text-text-primary font-mono text-xs break-all">
                       {formatValue(value)}
                     </span>
                   </div>

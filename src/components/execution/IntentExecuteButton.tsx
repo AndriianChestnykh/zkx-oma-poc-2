@@ -73,7 +73,7 @@ export function IntentExecuteButton({ intentId, intentStatus }: IntentExecuteBut
       </Button>
 
       {error && (
-        <div className="text-sm text-red-600 bg-red-50 p-2 rounded">
+        <div className="text-sm text-red-600 bg-status-error/10 p-2 rounded">
           {error}
         </div>
       )}

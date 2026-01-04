@@ -112,7 +112,7 @@ export function PolicyForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+        <div className="bg-status-error/10 border border-status-error rounded-lg p-4">
           <p className="text-sm text-red-800">{error}</p>
         </div>
       )}
@@ -120,12 +120,12 @@ export function PolicyForm() {
       {/* Basic Information */}
       <Card>
         <CardHeader>
-          <h3 className="text-lg font-semibold text-gray-900">Basic Information</h3>
+          <h3 className="text-lg font-semibold text-text-primary">Basic Information</h3>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="name" className="block text-sm font-medium text-text-primary mb-1">
                 Policy Name *
               </label>
               <input
@@ -135,13 +135,13 @@ export function PolicyForm() {
                 onChange={(e) => setName(e.target.value)}
                 required
                 maxLength={200}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="e.g., Production Asset Whitelist"
               />
             </div>
 
             <div>
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="description" className="block text-sm font-medium text-text-primary mb-1">
                 Description
               </label>
               <textarea
@@ -150,21 +150,21 @@ export function PolicyForm() {
                 onChange={(e) => setDescription(e.target.value)}
                 maxLength={1000}
                 rows={3}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Describe the purpose of this policy..."
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label htmlFor="policy-type" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="policy-type" className="block text-sm font-medium text-text-primary mb-1">
                   Policy Type *
                 </label>
                 <select
                   id="policy-type"
                   value={policyType}
                   onChange={(e) => setPolicyType(e.target.value as PolicyType)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="allow_deny_list">Allow/Deny List</option>
                   <option value="trade_limit">Trade Limit</option>
@@ -174,7 +174,7 @@ export function PolicyForm() {
               </div>
 
               <div>
-                <label htmlFor="priority" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="priority" className="block text-sm font-medium text-text-primary mb-1">
                   Priority
                 </label>
                 <input
@@ -183,9 +183,9 @@ export function PolicyForm() {
                   value={priority}
                   onChange={(e) => setPriority(parseInt(e.target.value) || 0)}
                   min={0}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
-                <p className="text-xs text-gray-500 mt-1">Lower values are evaluated first</p>
+                <p className="text-xs text-text-tertiary mt-1">Lower values are evaluated first</p>
               </div>
             </div>
 
@@ -195,9 +195,9 @@ export function PolicyForm() {
                 type="checkbox"
                 checked={enabled}
                 onChange={(e) => setEnabled(e.target.checked)}
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                className="h-4 w-4 text-primary focus:ring-blue-500 border-border rounded"
               />
-              <label htmlFor="enabled" className="ml-2 block text-sm text-gray-700">
+              <label htmlFor="enabled" className="ml-2 block text-sm text-text-primary">
                 Enable policy immediately
               </label>
             </div>
@@ -208,14 +208,14 @@ export function PolicyForm() {
       {/* Policy Configuration */}
       <Card>
         <CardHeader>
-          <h3 className="text-lg font-semibold text-gray-900">Policy Configuration</h3>
+          <h3 className="text-lg font-semibold text-text-primary">Policy Configuration</h3>
         </CardHeader>
         <CardContent>
           {/* Allow/Deny List Config */}
           {policyType === 'allow_deny_list' && (
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Mode</label>
+                <label className="block text-sm font-medium text-text-primary mb-1">Mode</label>
                 <div className="flex gap-4">
                   <label className="flex items-center">
                     <input
@@ -223,9 +223,9 @@ export function PolicyForm() {
                       value="allow"
                       checked={allowDenyMode === 'allow'}
                       onChange={(e) => setAllowDenyMode(e.target.value as 'allow' | 'deny')}
-                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
+                      className="h-4 w-4 text-primary focus:ring-blue-500 border-border"
                     />
-                    <span className="ml-2 text-sm text-gray-700">Allow (whitelist)</span>
+                    <span className="ml-2 text-sm text-text-primary">Allow (whitelist)</span>
                   </label>
                   <label className="flex items-center">
                     <input
@@ -233,15 +233,15 @@ export function PolicyForm() {
                       value="deny"
                       checked={allowDenyMode === 'deny'}
                       onChange={(e) => setAllowDenyMode(e.target.value as 'allow' | 'deny')}
-                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
+                      className="h-4 w-4 text-primary focus:ring-blue-500 border-border"
                     />
-                    <span className="ml-2 text-sm text-gray-700">Deny (blacklist)</span>
+                    <span className="ml-2 text-sm text-text-primary">Deny (blacklist)</span>
                   </label>
                 </div>
               </div>
 
               <div>
-                <label htmlFor="addresses" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="addresses" className="block text-sm font-medium text-text-primary mb-1">
                   Addresses (one per line) *
                 </label>
                 <textarea
@@ -250,7 +250,7 @@ export function PolicyForm() {
                   onChange={(e) => setAllowDenyAddresses(e.target.value)}
                   required
                   rows={5}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
+                  className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
                   placeholder="0x1234567890123456789012345678901234567890&#10;0xabcdefabcdefabcdefabcdefabcdefabcdefabcd"
                 />
               </div>
@@ -261,7 +261,7 @@ export function PolicyForm() {
           {policyType === 'trade_limit' && (
             <div className="space-y-4">
               <div>
-                <label htmlFor="min-amount" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="min-amount" className="block text-sm font-medium text-text-primary mb-1">
                   Minimum Amount (wei)
                 </label>
                 <input
@@ -269,13 +269,13 @@ export function PolicyForm() {
                   type="text"
                   value={minAmount}
                   onChange={(e) => setMinAmount(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono"
+                  className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono"
                   placeholder="1000000000000000000"
                 />
               </div>
 
               <div>
-                <label htmlFor="max-amount" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="max-amount" className="block text-sm font-medium text-text-primary mb-1">
                   Maximum Amount (wei)
                 </label>
                 <input
@@ -283,13 +283,13 @@ export function PolicyForm() {
                   type="text"
                   value={maxAmount}
                   onChange={(e) => setMaxAmount(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono"
+                  className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono"
                   placeholder="1000000000000000000000"
                 />
               </div>
 
               <div>
-                <label htmlFor="limit-asset" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="limit-asset" className="block text-sm font-medium text-text-primary mb-1">
                   Asset Address (optional)
                 </label>
                 <input
@@ -297,10 +297,10 @@ export function PolicyForm() {
                   type="text"
                   value={limitAsset}
                   onChange={(e) => setLimitAsset(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono"
+                  className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono"
                   placeholder="0x1234567890123456789012345678901234567890"
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-text-tertiary mt-1">
                   Leave empty to apply to all assets
                 </p>
               </div>
@@ -310,7 +310,7 @@ export function PolicyForm() {
           {/* Venue Allowlist Config */}
           {policyType === 'venue_allowlist' && (
             <div>
-              <label htmlFor="venues" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="venues" className="block text-sm font-medium text-text-primary mb-1">
                 Allowed Venues (one per line) *
               </label>
               <textarea
@@ -319,7 +319,7 @@ export function PolicyForm() {
                 onChange={(e) => setAllowedVenues(e.target.value)}
                 required
                 rows={5}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Uniswap&#10;SushiSwap&#10;1inch"
               />
             </div>
@@ -328,7 +328,7 @@ export function PolicyForm() {
           {/* Custom Config */}
           {policyType === 'custom' && (
             <div>
-              <label htmlFor="custom-config" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="custom-config" className="block text-sm font-medium text-text-primary mb-1">
                 Custom Configuration (JSON) *
               </label>
               <textarea
@@ -337,7 +337,7 @@ export function PolicyForm() {
                 onChange={(e) => setCustomConfig(e.target.value)}
                 required
                 rows={8}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
+                className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
                 placeholder='{"key": "value"}'
               />
             </div>

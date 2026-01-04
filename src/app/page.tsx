@@ -44,8 +44,8 @@ export default function Home() {
     <div className="space-y-6">
       {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-        <p className="mt-2 text-sm text-gray-600">
+        <h1 className="text-3xl font-bold text-text-primary">Dashboard</h1>
+        <p className="mt-2 text-sm text-text-secondary">
           Welcome to the ZKX OMA Proof of Concept
         </p>
       </div>
@@ -68,16 +68,16 @@ export default function Home() {
           <CardContent className="pt-6">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <div className="h-12 w-12 rounded-md bg-blue-500 flex items-center justify-center text-white text-xl font-bold">
+                <div className="h-12 w-12 rounded-md bg-status-info/100 flex items-center justify-center text-white text-xl font-bold">
                   {loading ? '...' : stats?.total || 0}
                 </div>
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">
+                  <dt className="text-sm font-medium text-text-tertiary truncate">
                     Total Intents
                   </dt>
-                  <dd className="text-lg font-semibold text-gray-900">
+                  <dd className="text-lg font-semibold text-text-primary">
                     {loading ? 'Loading...' : stats?.total || 0}
                   </dd>
                 </dl>
@@ -91,16 +91,16 @@ export default function Home() {
           <CardContent className="pt-6">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <div className="h-12 w-12 rounded-md bg-gray-500 flex items-center justify-center text-white text-xl font-bold">
+                <div className="h-12 w-12 rounded-md bg-surface0 flex items-center justify-center text-white text-xl font-bold">
                   {loading ? '...' : stats?.created || 0}
                 </div>
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">
+                  <dt className="text-sm font-medium text-text-tertiary truncate">
                     Created
                   </dt>
-                  <dd className="text-lg font-semibold text-gray-900">
+                  <dd className="text-lg font-semibold text-text-primary">
                     {loading ? 'Loading...' : stats?.created || 0}
                   </dd>
                 </dl>
@@ -120,10 +120,10 @@ export default function Home() {
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">
+                  <dt className="text-sm font-medium text-text-tertiary truncate">
                     Validated
                   </dt>
-                  <dd className="text-lg font-semibold text-gray-900">
+                  <dd className="text-lg font-semibold text-text-primary">
                     {loading ? 'Loading...' : stats?.validated || 0}
                   </dd>
                 </dl>
@@ -137,16 +137,16 @@ export default function Home() {
           <CardContent className="pt-6">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <div className="h-12 w-12 rounded-md bg-yellow-500 flex items-center justify-center text-white text-xl font-bold">
+                <div className="h-12 w-12 rounded-md bg-status-warning/100 flex items-center justify-center text-white text-xl font-bold">
                   {loading ? '...' : stats?.executing || 0}
                 </div>
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">
+                  <dt className="text-sm font-medium text-text-tertiary truncate">
                     Executing
                   </dt>
-                  <dd className="text-lg font-semibold text-gray-900">
+                  <dd className="text-lg font-semibold text-text-primary">
                     {loading ? 'Loading...' : stats?.executing || 0}
                   </dd>
                 </dl>
@@ -160,16 +160,16 @@ export default function Home() {
           <CardContent className="pt-6">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <div className="h-12 w-12 rounded-md bg-green-500 flex items-center justify-center text-white text-xl font-bold">
+                <div className="h-12 w-12 rounded-md bg-status-success/100 flex items-center justify-center text-white text-xl font-bold">
                   {loading ? '...' : stats?.executed || 0}
                 </div>
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">
+                  <dt className="text-sm font-medium text-text-tertiary truncate">
                     Executed
                   </dt>
-                  <dd className="text-lg font-semibold text-gray-900">
+                  <dd className="text-lg font-semibold text-text-primary">
                     {loading ? 'Loading...' : stats?.executed || 0}
                   </dd>
                 </dl>
@@ -183,16 +183,16 @@ export default function Home() {
           <CardContent className="pt-6">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <div className="h-12 w-12 rounded-md bg-red-500 flex items-center justify-center text-white text-xl font-bold">
+                <div className="h-12 w-12 rounded-md bg-status-error/100 flex items-center justify-center text-white text-xl font-bold">
                   {loading ? '...' : stats?.rejected || 0}
                 </div>
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">
+                  <dt className="text-sm font-medium text-text-tertiary truncate">
                     Rejected
                   </dt>
-                  <dd className="text-lg font-semibold text-gray-900">
+                  <dd className="text-lg font-semibold text-text-primary">
                     {loading ? 'Loading...' : stats?.rejected || 0}
                   </dd>
                 </dl>
@@ -212,10 +212,10 @@ export default function Home() {
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">
+                  <dt className="text-sm font-medium text-text-tertiary truncate">
                     Failed
                   </dt>
-                  <dd className="text-lg font-semibold text-gray-900">
+                  <dd className="text-lg font-semibold text-text-primary">
                     {loading ? 'Loading...' : stats?.failed || 0}
                   </dd>
                 </dl>
@@ -228,15 +228,15 @@ export default function Home() {
       {/* Quick Actions */}
       <Card>
         <CardHeader>
-          <h2 className="text-lg font-semibold text-gray-900">Quick Actions</h2>
+          <h2 className="text-lg font-semibold text-text-primary">Quick Actions</h2>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center justify-between p-4 border border-gray-200 rounded-md">
+          <div className="flex items-center justify-between p-4 border border-border rounded-md">
             <div>
-              <h3 className="text-sm font-medium text-gray-900">
+              <h3 className="text-sm font-medium text-text-primary">
                 Create Trading Intent
               </h3>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-text-tertiary">
                 Submit a new intent for policy validation and execution
               </p>
             </div>
@@ -245,10 +245,10 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="flex items-center justify-between p-4 border border-gray-200 rounded-md">
+          <div className="flex items-center justify-between p-4 border border-border rounded-md">
             <div>
-              <h3 className="text-sm font-medium text-gray-900">View All Intents</h3>
-              <p className="text-sm text-gray-500">
+              <h3 className="text-sm font-medium text-text-primary">View All Intents</h3>
+              <p className="text-sm text-text-tertiary">
                 Browse and manage your trading intents
               </p>
             </div>
@@ -257,12 +257,12 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="flex items-center justify-between p-4 border border-gray-200 rounded-md">
+          <div className="flex items-center justify-between p-4 border border-border rounded-md">
             <div>
-              <h3 className="text-sm font-medium text-gray-900">
+              <h3 className="text-sm font-medium text-text-primary">
                 Manage Policies
               </h3>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-text-tertiary">
                 Configure compliance policies and rules
               </p>
             </div>
@@ -276,12 +276,12 @@ export default function Home() {
       {/* Info Section */}
       <Card>
         <CardHeader>
-          <h2 className="text-lg font-semibold text-gray-900">
+          <h2 className="text-lg font-semibold text-text-primary">
             About ZKX OMA POC
           </h2>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-text-secondary">
             This proof-of-concept demonstrates an end-to-end workflow for trade intent
             management with embedded policy enforcement and blockchain execution. The
             system validates trading intents against compliance policies before executing

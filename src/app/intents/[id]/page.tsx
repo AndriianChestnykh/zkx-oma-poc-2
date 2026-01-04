@@ -36,7 +36,7 @@ export default async function IntentDetailPage({
       <div>
         <Link
           href="/intents"
-          className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1 mb-2"
+          className="text-sm text-primary hover:text-blue-800 flex items-center gap-1 mb-2"
         >
           <svg
             className="h-4 w-4"
@@ -55,8 +55,8 @@ export default async function IntentDetailPage({
         </Link>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Intent #{intent.id.slice(0, 8)}</h1>
-            <p className="mt-2 text-sm text-gray-600">
+            <h1 className="text-3xl font-bold text-text-primary">Intent #{intent.id.slice(0, 8)}</h1>
+            <p className="mt-2 text-sm text-text-secondary">
               View intent information and audit timeline
             </p>
           </div>
@@ -67,72 +67,72 @@ export default async function IntentDetailPage({
       {/* Intent Information */}
       <Card>
         <CardHeader>
-          <h2 className="text-lg font-semibold text-gray-900">
+          <h2 className="text-lg font-semibold text-text-primary">
             Intent Information
           </h2>
         </CardHeader>
         <CardContent>
           <dl className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
             <div>
-              <dt className="text-sm font-medium text-gray-500">User Address</dt>
-              <dd className="mt-1 text-sm text-gray-900 font-mono">
+              <dt className="text-sm font-medium text-text-tertiary">User Address</dt>
+              <dd className="mt-1 text-sm text-text-primary font-mono">
                 {formatAddress(intent.user_address)}
               </dd>
             </div>
             <div>
-              <dt className="text-sm font-medium text-gray-500">Status</dt>
+              <dt className="text-sm font-medium text-text-tertiary">Status</dt>
               <dd className="mt-1">
                 <IntentStatusBadge status={intent.status} />
               </dd>
             </div>
             <div>
-              <dt className="text-sm font-medium text-gray-500">Asset In</dt>
-              <dd className="mt-1 text-sm text-gray-900 font-mono">
+              <dt className="text-sm font-medium text-text-tertiary">Asset In</dt>
+              <dd className="mt-1 text-sm text-text-primary font-mono">
                 {formatAddress(intent.asset_in)}
               </dd>
             </div>
             <div>
-              <dt className="text-sm font-medium text-gray-500">Asset Out</dt>
-              <dd className="mt-1 text-sm text-gray-900 font-mono">
+              <dt className="text-sm font-medium text-text-tertiary">Asset Out</dt>
+              <dd className="mt-1 text-sm text-text-primary font-mono">
                 {formatAddress(intent.asset_out)}
               </dd>
             </div>
             <div>
-              <dt className="text-sm font-medium text-gray-500">Amount In</dt>
-              <dd className="mt-1 text-sm text-gray-900">
+              <dt className="text-sm font-medium text-text-tertiary">Amount In</dt>
+              <dd className="mt-1 text-sm text-text-primary">
                 {formatWeiToEth(intent.amount_in)} ({intent.amount_in} wei)
               </dd>
             </div>
             <div>
-              <dt className="text-sm font-medium text-gray-500">Min Amount Out</dt>
-              <dd className="mt-1 text-sm text-gray-900">
+              <dt className="text-sm font-medium text-text-tertiary">Min Amount Out</dt>
+              <dd className="mt-1 text-sm text-text-primary">
                 {formatWeiToEth(intent.amount_out_min)} ({intent.amount_out_min} wei)
               </dd>
             </div>
             <div>
-              <dt className="text-sm font-medium text-gray-500">Venue</dt>
-              <dd className="mt-1 text-sm text-gray-900">{intent.venue}</dd>
+              <dt className="text-sm font-medium text-text-tertiary">Venue</dt>
+              <dd className="mt-1 text-sm text-text-primary">{intent.venue}</dd>
             </div>
             <div>
-              <dt className="text-sm font-medium text-gray-500">Nonce</dt>
-              <dd className="mt-1 text-sm text-gray-900">{intent.nonce}</dd>
+              <dt className="text-sm font-medium text-text-tertiary">Nonce</dt>
+              <dd className="mt-1 text-sm text-text-primary">{intent.nonce}</dd>
             </div>
             <div>
-              <dt className="text-sm font-medium text-gray-500">Deadline</dt>
-              <dd className="mt-1 text-sm text-gray-900">
+              <dt className="text-sm font-medium text-text-tertiary">Deadline</dt>
+              <dd className="mt-1 text-sm text-text-primary">
                 {formatDate(new Date(intent.deadline * 1000))}
               </dd>
             </div>
             <div>
-              <dt className="text-sm font-medium text-gray-500">Created At</dt>
-              <dd className="mt-1 text-sm text-gray-900">
+              <dt className="text-sm font-medium text-text-tertiary">Created At</dt>
+              <dd className="mt-1 text-sm text-text-primary">
                 {formatDate(intent.created_at)}
               </dd>
             </div>
             {intent.signature && (
               <div className="col-span-2">
-                <dt className="text-sm font-medium text-gray-500">Signature</dt>
-                <dd className="mt-1 text-sm text-gray-900 font-mono break-all">
+                <dt className="text-sm font-medium text-text-tertiary">Signature</dt>
+                <dd className="mt-1 text-sm text-text-primary font-mono break-all">
                   {intent.signature}
                 </dd>
               </div>
@@ -145,7 +145,7 @@ export default async function IntentDetailPage({
       {/* Validation Section */}
       <Card>
         <CardHeader>
-          <h2 className="text-lg font-semibold text-gray-900">Policy Validation</h2>
+          <h2 className="text-lg font-semibold text-text-primary">Policy Validation</h2>
         </CardHeader>
         <CardContent>
           <IntentValidation intent={intent} />
@@ -156,10 +156,10 @@ export default async function IntentDetailPage({
       {intent.status === 'validated' && (
         <Card>
           <CardHeader>
-            <h2 className="text-lg font-semibold text-gray-900">Execute Intent</h2>
+            <h2 className="text-lg font-semibold text-text-primary">Execute Intent</h2>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-gray-600 mb-4">
+            <p className="text-sm text-text-secondary mb-4">
               This intent has passed all policy validations and is ready to be executed on-chain.
             </p>
             <IntentExecuteButton intentId={intent.id} intentStatus={intent.status} />
@@ -175,11 +175,11 @@ export default async function IntentDetailPage({
       {/* Audit Timeline */}
       <Card>
         <CardHeader>
-          <h2 className="text-lg font-semibold text-gray-900">Audit Timeline</h2>
+          <h2 className="text-lg font-semibold text-text-primary">Audit Timeline</h2>
         </CardHeader>
         <CardContent>
           {auditTrail.length === 0 ? (
-            <div className="text-center py-6 text-sm text-gray-500">
+            <div className="text-center py-6 text-sm text-text-tertiary">
               No audit artifacts yet
             </div>
           ) : (
@@ -189,7 +189,7 @@ export default async function IntentDetailPage({
                 if (artifact.artifact_type === 'event_decoded' && artifact.data) {
                   return (
                     <div key={artifact.id}>
-                      <div className="text-xs text-gray-500 mb-2">
+                      <div className="text-xs text-text-tertiary mb-2">
                         {formatDate(artifact.created_at)}
                       </div>
                       <BlockchainEventCard
@@ -211,18 +211,18 @@ export default async function IntentDetailPage({
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="font-medium text-sm text-gray-900">
+                          <span className="font-medium text-sm text-text-primary">
                             {artifact.artifact_type.replace(/_/g, ' ').toUpperCase()}
                           </span>
-                          <span className="text-xs text-gray-500">
+                          <span className="text-xs text-text-tertiary">
                             {formatDate(artifact.created_at)}
                           </span>
                         </div>
-                        <details className="text-sm text-gray-700">
-                          <summary className="cursor-pointer hover:text-gray-900">
+                        <details className="text-sm text-text-primary">
+                          <summary className="cursor-pointer hover:text-text-primary">
                             View Details
                           </summary>
-                          <pre className="mt-2 p-2 bg-gray-50 rounded text-xs overflow-x-auto">
+                          <pre className="mt-2 p-2 bg-surface rounded text-xs overflow-x-auto">
                             {JSON.stringify(artifact.data, null, 2)}
                           </pre>
                         </details>
