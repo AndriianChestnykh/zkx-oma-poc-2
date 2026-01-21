@@ -7,7 +7,7 @@ import { WalletButton } from "@/components/wallet/WalletButton";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "ZKX OMA POC",
+  title: "OnTrade OMA POC",
   description: "Order Management Account Proof of Concept",
 };
 
@@ -45,7 +45,7 @@ export default function RootLayout({
                     <div className="flex">
                       <div className="flex-shrink-0 flex items-center">
                         <Link href="/" className="text-xl font-bold text-primary">
-                          ZKX OMA
+                          OnTrade OMA
                         </Link>
                       </div>
                       <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
@@ -94,7 +94,7 @@ export default function RootLayout({
               <footer className="bg-surface border-t border-border">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
                   <p className="text-center text-sm text-muted-foreground">
-                    ZKX OMA Proof of Concept - Trade Intent Management System
+                    OnTrade OMA Proof of Concept - Trade Intent Management System
                   </p>
                 </div>
               </footer>

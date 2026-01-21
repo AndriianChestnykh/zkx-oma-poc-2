@@ -1,5 +1,5 @@
 /**
- * Custom error classes for the ZKX OMA application
+ * Custom error classes for the OnTrade OMA application
  */
 
 export class ValidationError extends Error {

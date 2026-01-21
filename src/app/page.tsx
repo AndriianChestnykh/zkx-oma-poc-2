@@ -46,7 +46,7 @@ export default function Home() {
       <div>
         <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Welcome to the ZKX OMA Proof of Concept
+          Welcome to the OnTrade OMA Proof of Concept
         </p>
       </div>
 
@@ -277,7 +277,7 @@ export default function Home() {
       <Card>
         <CardHeader>
           <h2 className="text-lg font-semibold text-foreground">
-            About ZKX OMA POC
+            About OnTrade OMA POC
           </h2>
         </CardHeader>
         <CardContent>
